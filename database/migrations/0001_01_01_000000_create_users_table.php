@@ -17,10 +17,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->unsignedBigInteger('jobTitle_id')->nullable();
+            $table->integer('role')->default(0); // 0 => employee ,, 1 admin ,, 2 super admin
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
+
+            $table->foreign('jobTitle_id')->references('id')->on('job_titles');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
