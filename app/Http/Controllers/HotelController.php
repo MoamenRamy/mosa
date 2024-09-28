@@ -7,12 +7,19 @@ use Illuminate\Http\Request;
 
 class HotelController extends Controller
 {
+    public $hotel;
+
+    public function __construct(Hotel $hotel)
+    {
+        $this->hotel = $hotel;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $hotels = $this->hotel->paginate(12);
+        return view('hotels.index', compact('hotels'));
     }
 
     /**
@@ -20,7 +27,7 @@ class HotelController extends Controller
      */
     public function create()
     {
-        //
+        return view('hotels.create');
     }
 
     /**
@@ -28,7 +35,27 @@ class HotelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'address' => 'required',
+            'stars' => 'required',
+        ]);
+
+        $hotel = new $this->hotel;
+
+        $hotel->name = $request->name;
+        $hotel->address = $request->address;
+        $hotel->stars = $request->stars;
+        $hotel->sales = $request->sales;
+        $hotel->debt = $request->debt;
+        $hotel->last_supply_date = $request->last_supply_date;
+        $hotel->last_supply_count = $request->last_supply_count;
+
+        $hotel->save();
+
+        return redirect()->route('hotels.index');
+
+        // ->with('success', 'Hotel created successfully.')    -->> make success
     }
 
     /**
@@ -36,7 +63,7 @@ class HotelController extends Controller
      */
     public function show(Hotel $hotel)
     {
-        //
+        return view('hotels.show', compact('hotel'));
     }
 
     /**
@@ -44,7 +71,7 @@ class HotelController extends Controller
      */
     public function edit(Hotel $hotel)
     {
-        //
+        return view('hotels.edit', compact('hotel'));
     }
 
     /**
@@ -52,7 +79,23 @@ class HotelController extends Controller
      */
     public function update(Request $request, Hotel $hotel)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'address' => 'required',
+            'stars' => 'required',
+        ]);
+
+        $hotel->name = $request->name;
+        $hotel->address = $request->address;
+        $hotel->stars = $request->stars;
+        $hotel->sales = $request->sales;
+        $hotel->debt = $request->debt;
+        $hotel->last_supply_date = $request->last_supply_date;
+        $hotel->last_supply_count = $request->last_supply_count;
+
+        $hotel->save();
+
+        return redirect()->route('hotels.show', $hotel);
     }
 
     /**
@@ -60,6 +103,7 @@ class HotelController extends Controller
      */
     public function destroy(Hotel $hotel)
     {
-        //
+        $hotel->delete();
+        return redirect()->route('hotels.index');
     }
 }

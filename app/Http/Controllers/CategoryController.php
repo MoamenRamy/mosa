@@ -7,12 +7,20 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+
+    public $category;
+
+    public function __construct(Category $category)
+    {
+        $this->category = $category;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $categories = $this->category::paginate(12);
+        return view('category.index', compact('categories'));
     }
 
     /**
@@ -20,7 +28,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create');
     }
 
     /**
@@ -28,15 +36,29 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $category = new $this->category;
+
+        $category->name = $request->name;
+
+        $category->save();
+
+        // session flash
+
+        return redirect(route('category.index'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        //
+        // we will remove this function
+        $category = $this->category::findOrFail($id);
+        return view('category.show', compact('category'));
     }
 
     /**
@@ -44,15 +66,27 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('category.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $category = $this->category::findOrFail($id);
+        // $category->update($request->all());
+        $category->name = $request->name;
+
+        $category->save();
+
+        //session flash
+
+        return redirect(route('category.index'));
     }
 
     /**
@@ -60,6 +94,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        // session flash
+
+        return redirect(route('category.index'));
     }
 }

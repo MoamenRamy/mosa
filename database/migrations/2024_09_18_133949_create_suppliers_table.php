@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone')->unique();
-            $table->string('address');
-            $table->decimal('debt', 14, 2)->nullable();
+            $table->string('address')->nullable();
+            $table->decimal('debt', 14, 2)->default(0);
             $table->timestamps();
         });
     }

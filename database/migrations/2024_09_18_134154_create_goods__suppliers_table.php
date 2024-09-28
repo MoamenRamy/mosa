@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('goods__suppliers', function (Blueprint $table) {
             // this table show who supplies what
             $table->id();
-            $table->unsignedBigInteger('good_id');
+            $table->unsignedBigInteger('goods_id');
             $table->unsignedBigInteger('supplier_id');
             $table->timestamps();
 
-            $table->foreign('good_id')->references('id')->on('goods');
+            $table->foreign('goods_id')->references('id')->on('goods');
             $table->foreign('supplier_id')->references('id')->on('suppliers');
         });
     }

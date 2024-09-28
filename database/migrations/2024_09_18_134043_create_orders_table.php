@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('hotel_id');
             $table->unsignedBigInteger('user_id');
             $table->decimal('price', 14, 2)->nullable();
-            $table->decimal('paid', 14, 2);
+            $table->decimal('paid', 14, 2)->nullable();
             $table->timestamps();
 
             $table->foreign('hotel_id')->references('id')->on('hotels');

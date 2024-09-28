@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('goods_id');
             $table->decimal('price', 14, 2);
             $table->decimal('count', 14, 2);
+            $table->decimal('total', 14, 2);
             $table->timestamps();
 
             $table->foreign('supplier_order_id')->references('id')->on('supplier_orders');

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('phone')->nullable();
             $table->unsignedBigInteger('jobTitle_id')->nullable();
             $table->integer('role')->default(0); // 0 => employee ,, 1 admin ,, 2 super admin
             $table->rememberToken();

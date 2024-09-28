@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class GoodsSupplierController extends Controller
 {
+
+
+    // add sync to handel goods and supplier in goods and suppliers controllers
+
+
     /**
      * Display a listing of the resource.
      */

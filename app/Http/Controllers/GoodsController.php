@@ -2,17 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\goods;
+use App\Models\Goods;
 use Illuminate\Http\Request;
 
 class GoodsController extends Controller
 {
+    public $goods;
+
+    public function __construct(Goods $goods)
+    {
+        $this->goods = $goods;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $goods = $this->goods::paginate(12);
+        return view('goods.index', compact('goods'));
     }
 
     /**
@@ -20,7 +28,7 @@ class GoodsController extends Controller
      */
     public function create()
     {
-        //
+        return view('goods.create');
     }
 
     /**
@@ -28,7 +36,25 @@ class GoodsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+            'count' => 'required',
+        ]);
+
+        $goods = new $this->goods;
+
+        $goods->name = $request->name;
+        $goods->price = $request->price;
+        $goods->count = $request->count;
+        $goods->category_id = $request->category_id;
+        $goods->supplier_id = $request->supplier_id;
+
+        $goods->save();
+
+        // add flach section
+        return redirect()->route('goods.index');
+        // ->with('success', 'Товар добавлен успешно')
     }
 
     /**
@@ -36,7 +62,7 @@ class GoodsController extends Controller
      */
     public function show(goods $goods)
     {
-        //
+        return view('goods.show', compact('goods'));
     }
 
     /**
@@ -44,7 +70,7 @@ class GoodsController extends Controller
      */
     public function edit(goods $goods)
     {
-        //
+        return view('goods.edit', compact('goods'));
     }
 
     /**
@@ -52,7 +78,23 @@ class GoodsController extends Controller
      */
     public function update(Request $request, goods $goods)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+            'count' => 'required',
+        ]);
+
+        $goods->name = $request->name;
+        $goods->price = $request->price;
+        $goods->count = $request->count;
+        $goods->category_id = $request->category_id;
+        $goods->supplier_id = $request->supplier_id;
+
+        $goods->save();
+
+        // add flach section
+        return redirect()->route('goods.show', $goods);
+        // ->with('success', 'Товар изменен успешно')
     }
 
     /**
@@ -60,6 +102,8 @@ class GoodsController extends Controller
      */
     public function destroy(goods $goods)
     {
-        //
+        $goods->delete();
+        return redirect()->route('goods.index');
+        // ->with('success', 'Товар удален успешно')
     }
 }
