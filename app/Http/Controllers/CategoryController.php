@@ -48,7 +48,7 @@ class CategoryController extends Controller
 
         // session flash
 
-        return redirect(route('category.index'));
+        return redirect()->route('category.index')->with('success', 'تم إضافة التصنيف بنجاح!');
     }
 
     /**
@@ -82,11 +82,11 @@ class CategoryController extends Controller
         // $category->update($request->all());
         $category->name = $request->name;
 
-        $category->save();
+        $category->update();
 
         //session flash
 
-        return redirect(route('category.index'));
+        return redirect()->route('category.index')->with('success', 'تم تعديل التصنيف بنجاح!');
     }
 
     /**
@@ -98,6 +98,6 @@ class CategoryController extends Controller
 
         // session flash
 
-        return redirect(route('category.index'));
+        return redirect()->route('category.index')->with('success', 'تم مسح التصنيف بنجاح!');
     }
 }

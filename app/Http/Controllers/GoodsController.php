@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Goods;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,8 @@ class GoodsController extends Controller
      */
     public function index()
     {
-        $goods = $this->goods::paginate(12);
+        $goods = $this->goods::with('category')->paginate(12);
+
         return view('goods.index', compact('goods'));
     }
 
@@ -28,7 +30,8 @@ class GoodsController extends Controller
      */
     public function create()
     {
-        return view('goods.create');
+        $categories = Category::all();
+        return view('goods.create', compact('categories'));
     }
 
     /**
@@ -48,12 +51,12 @@ class GoodsController extends Controller
         $goods->price = $request->price;
         $goods->count = $request->count;
         $goods->category_id = $request->category_id;
-        $goods->supplier_id = $request->supplier_id;
+        // $goods->supplier_id = $request->supplier_id;
 
         $goods->save();
 
         // add flach section
-        return redirect()->route('goods.index');
+        return redirect()->route('goods.index')->with('success', 'تم إضافة البضاعة بنجاح!');
         // ->with('success', 'Товар добавлен успешно')
     }
 
@@ -68,42 +71,50 @@ class GoodsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(goods $goods)
+    public function edit($id)
     {
-        return view('goods.edit', compact('goods'));
+        $good = Goods::findOrFail($id); // Fetch the good by ID
+        $categories = Category::all(); // Fetch all categories for the dropdown
+        return view('goods.edit', compact('good', 'categories')); // Pass good and categories to the view
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, goods $goods)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required',
             'price' => 'required',
             'count' => 'required',
         ]);
+        $goods = $this->goods::findOrFail($id);
 
         $goods->name = $request->name;
         $goods->price = $request->price;
         $goods->count = $request->count;
         $goods->category_id = $request->category_id;
-        $goods->supplier_id = $request->supplier_id;
+        // $goods->supplier_id = $request->supplier_id;
 
-        $goods->save();
+        $goods->update();
 
         // add flach section
-        return redirect()->route('goods.show', $goods);
+        // return redirect()->route('goods.show', $goods);
+        return redirect()->route('goods.index')->with('success', 'تم تعديل البضاعة بنجاح!');
         // ->with('success', 'Товар изменен успешно')
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(goods $goods)
+    public function destroy($id)
     {
-        $goods->delete();
-        return redirect()->route('goods.index');
+        $goods = Goods::find($id);
+
+
+        $goods->delete(); // This deletes the record from the database
+
+        return redirect()->route('goods.index')->with('success', 'تم مسح البضاعة بنجاح!');
         // ->with('success', 'Товар удален успешно')
     }
 }

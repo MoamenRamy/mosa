@@ -23,6 +23,6 @@ class Goods extends Model
 
     public function order_items()
     {
-        return $this->hasMany(order_item::class);
+        return $this->hasMany(order_item::class, 'good_id');
     }
 }

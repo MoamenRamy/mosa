@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Goods;
+use App\Models\Hotel;
 use App\Models\Order;
 use App\Models\Order_item;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -19,7 +22,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = $this->order::paginate(12);
+        $orders = $this->order::with('hotel', 'user')->orderBy('created_at', 'desc')->paginate(12);
         return view('orders.index', compact('orders'));
     }
 
@@ -28,7 +31,9 @@ class OrderController extends Controller
      */
     public function create()
     {
-        return view('orders.create');
+        $hotels = Hotel::all();
+        $goods = Goods::all();
+        return view('orders.create', compact('hotels', 'goods'));
     }
 
     /**
@@ -37,7 +42,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            // 'user_id' => 'required|exists:users,id',
             'hotel_id' => 'required|exists:hotels,id',
             // 'paid' => 'required|boolean',
             // 'price' => 'required|numeric|min:0',
@@ -46,15 +51,15 @@ class OrderController extends Controller
             'order_items' => 'required|array',
             'order_items.*.goods_id' => 'required|exists:goods,id',
             'order_items.*.count' => 'required|integer|min:1',
-            'order_items.*.price' => 'required|numeric|min:0',
+            // 'order_items.*.price' => 'required|numeric|min:0',
             ]);
 
         // Create the order
         $order = Order::create([
-            'user_id' => $validatedData['user_id'],
+            'user_id' => auth()->user()->id,
             'hotel_id' => $validatedData['hotel_id'],
             'price' => 0, // Will be calculated later
-            'paid' => $request->paid,
+            'paid' => 0,
         ]);
 
         // Initialize total amount
@@ -62,21 +67,25 @@ class OrderController extends Controller
         // Create order items
         foreach ($validatedData['order_items'] as $item) {
 
-        $total = $item['count'] * $item['price'];
-        $totalAmount += $total;
+            $good = Goods::findOrFail($item['goods_id']); // Fetch the good by its ID
 
-        Order_item::create([
-        'order_id' => $order->id,
-        'goods_id' => $item['goods_id'],
-        'count' => $item['count'],
-        'price' => $item['price'],
-        'total' => $total,
-        ]);
+            $total = $item['count'] * $good->price; // Use good's price
+            $totalAmount += $total;
+
+            // Create a new order item
+            $orderItem = new Order_item();
+            $orderItem->order_id = $order->id;
+            $orderItem->goods_id = $item['goods_id'];
+            $orderItem->count = $item['count'];
+            $orderItem->price = $good->price; // Set price from good
+            $orderItem->total = $total;
+
+            $orderItem->save();
         }
         // Update the total amount in the order
         $order->update(['price' => $totalAmount]);
 
-        return redirect()->route('hotels.index');
+        return redirect()->route('orders.show', $order)->with('success', 'تم إضافة الطلبية بنجاح!');
     }
 
     /**
@@ -84,7 +93,9 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return view('orders.show', compact('order'));
+        $orderItems = $order->order_items;
+        $goods = Goods::all();
+        return view('orders.show', compact('order', 'orderItems', 'goods'));
     }
 
     /**
@@ -164,22 +175,47 @@ class OrderController extends Controller
 
         $order->delete();
 
-        return redirect()->route('orders.index');
+        return redirect()->route('orders.index')->with('success', 'تم مسح الطلبية بنجاح!');
     }
 
     public function destroyItem($orderId, $itemId)
-    {
-        // Find the order item
-        $orderItem = Order_item::where('order_id', $orderId)->findOrFail($itemId);
+{
+    // Find the order item by order_id and item id
+    $orderItem = Order_item::where('order_id', $orderId)->findOrFail($itemId);
 
-        // Delete the order item
-        $orderItem->delete();
+    // Delete the order item
+    $orderItem->delete();
 
-        // Recalculate the total amount for the order
-        $order = Order::findOrFail($orderId);
-        $totalAmount = $order->orderItems->sum('total');
-        $order->update(['price' => $totalAmount]);
+    // Find the order
+    $order = Order::findOrFail($orderId);
 
-        return redirect()->back();
-    }
+    // Recalculate the total amount for the order, check if there are any remaining items
+    $totalAmount = $order->order_items()->sum('total');
+
+    // Update the order with the new total and set the current user and updated_at
+    $order->price = $totalAmount;
+    $order->updated_at = Carbon::now();
+    $order->user_id = auth()->user()->id;
+    $order->save();
+
+    return redirect()->back()->with('success', 'تم مسح العنصر بنجاح!');
 }
+
+public function updatePaid(Request $request, $id)
+{
+    $order = $this->order::find($id);
+
+    $request->validate([
+        'paid' => 'required|numeric|min:0|max:' . $order->price,
+    ]);
+
+
+    $order->paid = $request->paid;
+
+    $order->save();
+
+    return response()->json(['success' => true, 'message' => 'Paid amount updated successfully']);
+}
+
+}
+

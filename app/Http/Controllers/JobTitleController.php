@@ -7,18 +7,12 @@ use Illuminate\Http\Request;
 
 class JobTitleController extends Controller
 {
-    public $jobTitle;
-
-    public function __construct( JobTitle $jobTitle )
-    {
-        $this->$jobTitle = $jobTitle;
-    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $jobTitles = $this->jobTitle::paginate(12);
+        $jobTitles = JobTitle::paginate(12);
         return view('job_titles.index', compact('jobTitles'));
     }
 
@@ -40,58 +34,64 @@ class JobTitleController extends Controller
             'salary' => 'required'
         ]);
 
-        $jobTitle = new $this->jobTitle;
+        $jobTitle = new JobTitle;
 
         $jobTitle->name = $request->name;
         $jobTitle->salary = $request->salary;
 
         $jobTitle->save();
 
-        return redirect()->route('job_titles.index');
+        return redirect()->route('jobTitles.index')->with('success', 'تم إضافة الوظيفة بنجاح!');
         // ->with('success', 'Job title created successfully.')
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(JobTitle $jobTitle)
+    public function show($id)
     {
+        $jobTitle = JobTitle::find($id);
         return view('job_titles.show', compact('jobTitle'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(JobTitle $jobTitle)
+    public function edit($id)
     {
+        $jobTitle = JobTitle::find($id);
         return view('job_titles.edit', compact('jobTitle'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, JobTitle $jobTitle)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required',
             'salary' => 'required',
         ]);
 
+        $jobTitle = JobTitle::find($id);
+
         $jobTitle->name = $request->name;
         $jobTitle->salary = $request->salary;
 
         $jobTitle->save();
 
-        return redirect()->route('job_titles.index');
+        return redirect()->route('jobTitles.index')->with('success', 'تم تعديل الوظيفة بنجاح!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(JobTitle $jobTitle)
+    public function destroy($id)
     {
+        $jobTitle = JobTitle::find($id);
+
         $jobTitle->delete();
-        return redirect()->route('job_titles.index');
+        return redirect()->route('jobTitles.index')->with('success', 'تم مسح الوظيفة بنجاح!');
         // ->with('success', 'Job title deleted successfully.')
     }
 }

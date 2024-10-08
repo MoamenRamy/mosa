@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Goods;
+use App\Models\Supplier;
 use App\Models\Supplier_order;
 use App\Models\Supplier_order_item;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SupplierOrderController extends Controller
@@ -20,7 +23,7 @@ class SupplierOrderController extends Controller
      */
     public function index()
     {
-        $supplierOrders = $this->supplierOrder::paginate(12);
+        $supplierOrders = $this->supplierOrder::orderBy('created_at', 'desc')->paginate(12);
         return view('supplier_orders.index', compact('supplierOrders'));
     }
 
@@ -29,7 +32,9 @@ class SupplierOrderController extends Controller
      */
     public function create()
     {
-        return view('supplier_orders.create');
+        $suppliers = Supplier::all();
+        $goods = Goods::all();
+        return view('supplier_orders.create', compact('suppliers', 'goods'));
     }
 
     /**
@@ -39,7 +44,7 @@ class SupplierOrderController extends Controller
     {
         $validatedData = $request->validate([
             'supplier_id' => 'required|exists:suppliers,id',
-            'user_id' => 'required|exists:users,id',
+            // 'user_id' => 'required|exists:users,id',
             // 'paid' => 'required|boolean',
             // 'price' => 'required|numeric|min:0',
             // 'order_items' => 'required|array',
@@ -47,15 +52,15 @@ class SupplierOrderController extends Controller
             'supplier_order_items' => 'required|array',
             'supplier_order_items.*.goods_id' => 'required|exists:goods,id',
             'supplier_order_items.*.count' => 'required|integer|min:1',
-            'supplier_order_items.*.price' => 'required|numeric|min:0',
+            // 'supplier_order_items.*.price' => 'required|numeric|min:0',
             ]);
 
         // Create the order
         $order = Supplier_order::create([
             'supplier_id' => $validatedData['supplier_id'],
-            'user_id' => $validatedData['user_id'],
+            'user_id' => auth()->user()->id,
             'price' => 0, // Will be calculated later
-            'paid' => $request->paid,
+            'paid' => 0,
         ]);
 
         // Initialize total amount
@@ -63,29 +68,34 @@ class SupplierOrderController extends Controller
         // Create order items
         foreach ($validatedData['supplier_order_items'] as $item) {
 
-        $total = $item['count'] * $item['price'];
-        $totalAmount += $total;
+            $good = Goods::findOrFail($item['goods_id']); // Fetch the good by its ID
 
-        Supplier_order_item::create([
-        'supplier_order_id' => $order->id,
-        'goods_id' => $item['goods_id'],
-        'count' => $item['count'],
-        'price' => $item['price'],
-        'total' => $total,
-        ]);
+            $total = $item['count'] * $good->price; // Use good's price
+            $totalAmount += $total;
+
+            // Create a new order item
+            $orderItem = new Supplier_order_item();
+            $orderItem->supplier_order_id = $order->id;
+            $orderItem->goods_id = $item['goods_id'];
+            $orderItem->count = $item['count'];
+            $orderItem->price = $good->price; // Set price from good
+            $orderItem->total = $total;
+
+            $orderItem->save();
         }
         // Update the total amount in the order
         $order->update(['price' => $totalAmount]);
 
-        return redirect()->route('suppliers.index');
+        return redirect()->route('supplierOrders.show', $order)->with('success', 'تم أضافة الطلبية بنجاح!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Supplier_order $supplier_order)
+    public function show(Supplier_order $supplierOrder)
     {
-        return view('supplier_orders.show', compact('supplier_order'));
+        $supplierOrderItems = $supplierOrder->supplier_order_items;
+        return view('supplier_orders.show', compact('supplierOrder', 'supplierOrderItems'));
     }
 
     /**
@@ -160,13 +170,15 @@ class SupplierOrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Supplier_order $supplier_order)
+    public function destroy($id)
     {
-        $supplier_order->supplier_order_items()->delete();
+
+        $supplier_order = $this->supplierOrder::findOrFail($id);
+        // $supplier_order->supplier_order_items()->delete();
 
         $supplier_order->delete();
 
-        return redirect()->route('supplier_orders.index');
+        return redirect()->route('supplierOrders.index')->with('success', 'تم مسح الطلبية بنجاح!');
     }
 
     public function destroyItem($orderId, $itemId)
@@ -179,9 +191,31 @@ class SupplierOrderController extends Controller
 
         // Recalculate the total amount for the order
         $order = Supplier_order::findOrFail($orderId);
-        $totalAmount = $order->supplier_order_items()->sum('total');
-        $order->update(['price' => $totalAmount]);
 
-        return redirect()->back();
+        $totalAmount = $order->supplier_order_items->sum('total');
+
+        $order->price = $totalAmount;
+        $order->updated_at = Carbon::now();
+        $order->user_id = auth()->user()->id;
+
+        $order->save();
+
+        return redirect()->back()->with('success', 'تم مسح العنصر بنجاح!');
+    }
+
+    public function updatePaid(Request $request, $id)
+    {
+        $supplierOrder = Supplier_order::findOrFail($id);
+
+        $request->validate([
+            'paid' => 'required|numeric|min:0|max:' . $supplierOrder->price,
+        ]);
+
+
+        $supplierOrder->paid = $request->paid;
+
+        $supplierOrder->save();
+
+        return response()->json(['success' => true, 'message' => 'Paid amount updated successfully']);
     }
 }

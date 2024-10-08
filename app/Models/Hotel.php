@@ -10,6 +10,7 @@ class Hotel extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+    protected $dates = ['last_supply_date'];
 
     public function orders()
     {

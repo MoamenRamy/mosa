@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier_order_item;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SupplierOrderItemController extends Controller
@@ -74,24 +75,34 @@ class SupplierOrderItemController extends Controller
     // /**
     //  * Update the specified resource in storage.
     //  */
-    // public function update(Request $request, Supplier_order_item $supplier_order_item)
-    // {
-    //     $request->validate([
-    //         'supplier_order_id' => 'required',
-    //         'goods_id' => 'required',
-    //         'price' => 'required',
-    //         'count' => 'required',
-    //         ]);
+    public function updateCount(Request $request, $id)
+{
+    try {
+        $supplierOrderItem = $this->supplier_order_item::findOrFail($id);
 
-    //         $supplier_order_item->supplier_order_id = $request->supplier_order_id;
-    //         $supplier_order_item->goods_id = $request->goods_id;
-    //         $supplier_order_item->price = $request->price;
-    //         $supplier_order_item->count = $request->count;
+        // Validate the input
+        $request->validate([
+            'count' => 'required|integer|min:1',
+        ]);
 
-    //         $supplier_order_item->save();
+        // Update the count and total fields
+        $supplierOrderItem->count = $request->count;
+        $supplierOrderItem->total = $request->count * $supplierOrderItem->price;
+        $supplierOrderItem->save();
 
-    //         return redirect()->route('supplier_order_items.index');
-    // }
+        // Update the supplier order's total price
+        $supplierOrder = $supplierOrderItem->supplier_order;
+        $supplierOrder->price = $supplierOrder->supplier_order_items->sum('total');
+        $supplierOrder->updated_at = Carbon::now();
+        $supplierOrder->user_id = auth()->user()->id;
+        $supplierOrder->save();
+
+        // Return a JSON response
+        return response()->json(['success' => true, 'message' => 'Count updated successfully']);
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+    }
+}
 
     // /**
     //  * Remove the specified resource from storage.

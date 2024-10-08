@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
 
-            $table->foreign('jobTitle_id')->references('id')->on('job_titles');
+            $table->foreign('jobTitle_id')->references('id')->on('job_titles')->onDelete('set null');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

@@ -38,7 +38,7 @@ class HotelController extends Controller
         $request->validate([
             'name' => 'required',
             'address' => 'required',
-            'stars' => 'required',
+            'stars' => 'required|integer|between:0,7',
         ]);
 
         $hotel = new $this->hotel;
@@ -53,7 +53,7 @@ class HotelController extends Controller
 
         $hotel->save();
 
-        return redirect()->route('hotels.index');
+        return redirect()->route('hotels.index')->with('success', 'تم إضافة الفندق بنجاح!');
 
         // ->with('success', 'Hotel created successfully.')    -->> make success
     }
@@ -82,7 +82,7 @@ class HotelController extends Controller
         $request->validate([
             'name' => 'required',
             'address' => 'required',
-            'stars' => 'required',
+            'stars' => 'required|integer|between:0,7',
         ]);
 
         $hotel->name = $request->name;
@@ -93,9 +93,10 @@ class HotelController extends Controller
         $hotel->last_supply_date = $request->last_supply_date;
         $hotel->last_supply_count = $request->last_supply_count;
 
-        $hotel->save();
+        $hotel->update();
 
-        return redirect()->route('hotels.show', $hotel);
+        // return redirect()->route('hotels.show', $hotel);
+        return redirect()->route('hotels.index')->with('success', 'تم تعديل الفندق بنجاح!');
     }
 
     /**
@@ -104,6 +105,6 @@ class HotelController extends Controller
     public function destroy(Hotel $hotel)
     {
         $hotel->delete();
-        return redirect()->route('hotels.index');
+        return redirect()->route('hotels.index')->with('success', 'تم مسح الفندق بنجاح!');
     }
 }

@@ -66,7 +66,7 @@ class User extends Authenticatable
 
     public function jobTitle()
     {
-        return $this->belongsTo(JobTitle::class);
+        return $this->belongsTo(JobTitle::class, 'jobTitle_id');
     }
 
     public function orders()
@@ -79,13 +79,18 @@ class User extends Authenticatable
         return $this->hasMany(Supplier_order::class);
     }
 
-    public function isAdmin()
+    public function employee()
     {
         return $this->role = 1;
     }
 
-    public function isSuperAdmin()
+    public function isAdmin()
     {
         return $this->role = 2;
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->role = 3;
     }
 }

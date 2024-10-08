@@ -15,4 +15,9 @@ class Supplier_order_item extends Model
    {
      return $this->belongsTo(Supplier_order::class);
    }
+
+   public function goods()
+    {
+        return $this->belongsTo(Goods::class);
+    }
 }

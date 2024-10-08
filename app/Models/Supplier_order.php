@@ -18,7 +18,7 @@ class Supplier_order extends Model
 
     public function supplier_order_items()
     {
-        return $this->hasMany(Supplier_order_item::class);
+        return $this->hasMany(Supplier_order_item::class, 'supplier_order_id');
     }
 
     public function user()

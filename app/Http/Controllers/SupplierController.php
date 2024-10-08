@@ -38,7 +38,7 @@ class SupplierController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'phone' => 'required',
+            'phone' => 'required|digits:11|unique:suppliers,phone',
             // 'address' => 'required',
         ]);
 
@@ -57,7 +57,7 @@ class SupplierController extends Controller
 
         $supplier->save();
 
-        return redirect()->route('suppliers.index');
+        return redirect()->route('suppliers.index')->with('success', 'تم إضافة المورد بنجاح!');
         // ->with('success', 'Supplier added successfully')
     }
 
@@ -84,7 +84,7 @@ class SupplierController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'phone' => 'required',
+            'phone' => 'required|digits:11|unique:suppliers,phone',
         ]);
 
         $supplier->name = $request->name;
@@ -98,9 +98,9 @@ class SupplierController extends Controller
             $supplier->debt = $request->debt;
         }
 
-        $supplier->save();
+        $supplier->update();
 
-        return redirect()->route('suppliers.index');
+        return redirect()->route('suppliers.index')->with('success', 'تم تعديل المورد بنجاح!');
     }
 
     /**
@@ -110,6 +110,6 @@ class SupplierController extends Controller
     {
         $supplier->delete();
 
-        return redirect()->route('suppliers.index');
+        return redirect()->route('suppliers.index')->with('success', 'تم مسح المورد بنجاح!');
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('price', 14, 2);
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->unsignedBigInteger('supplier_id')->nullable();
+            // $table->unsignedBigInteger('supplier_id')->nullable();
             $table->decimal('count', 14, 2)->default(0); // per ton
             $table->timestamps();
         });

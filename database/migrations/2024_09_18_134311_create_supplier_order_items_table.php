@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('supplier_order_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('supplier_order_id');
-            $table->unsignedBigInteger('goods_id');
+            $table->unsignedBigInteger('goods_id')->nullable();
             $table->decimal('price', 14, 2);
             $table->decimal('count', 14, 2);
-            $table->decimal('total', 14, 2);
+            $table->decimal('total', 14, 2)->default(0);
             $table->timestamps();
 
-            $table->foreign('supplier_order_id')->references('id')->on('supplier_orders');
-            $table->foreign('goods_id')->references('id')->on('goods');
+            $table->foreign('supplier_order_id')->references('id')->on('supplier_orders')->onDelete('cascade');
+            $table->foreign('goods_id')->references('id')->on('goods')->onDelete('set null');
         });
     }
 

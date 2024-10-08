@@ -20,7 +20,7 @@ class GoodsFactory extends Factory
             'name' => $this->faker->name(),
             'price' => $this->faker->numberBetween(1000, 3000),
             'category_id' => $this->faker->numberBetween(1, 3),
-            'supplier_id' => $this->faker->numberBetween(1, 3),
+            // 'supplier_id' => $this->faker->numberBetween(1, 3),
             'count' => $this->faker->numberBetween(1, 30),
         ];
     }
