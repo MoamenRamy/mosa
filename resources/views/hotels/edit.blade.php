@@ -45,7 +45,17 @@
 
         <div class="mb-3">
             <label for="debt" class="form-label">الديون</label>
-            <input type="number" class="form-control rounded-2" id="debt" name="debt" value="{{ old('debt', $hotel->debt) }}" step="1">
+            <input type="number" class="form-control rounded-2" id="debt" name="debt" value="{{ old('debt', $hotel->debt) }}" step="1" disabled>
+        </div>
+
+        <div class="mb-3">
+            <label for="addDebt" class="form-label">إضافة مديونية</label>
+            <input type="number" class="form-control rounded-2" id="addDebt" name="addDebt">
+        </div>
+
+        <div class="mb-3">
+            <label for="paid" class="form-label">خصم من المديونية</label>
+            <input type="number" class="form-control rounded-2" id="paid" name="paid">
         </div>
 
         <div class="mb-3">

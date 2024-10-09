@@ -184,9 +184,7 @@
                             <li class="nav-item dropdown justify-content-left">
                                 <a id="navbarDropdown" class="nav-link" href="#" data-bs-toggle="dropdown">
                                     <button type="button" class="inline-flex items-center px-3 py-2 text-sm leading-4 font-medium rounded-md navbar-dark bg-dark hover:text-white-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
-                                        <svg class="profile-arrow ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                        </svg>
+                                        <i class="fa-solid fa-caret-down px-2 mt-1" style="color: #74C0FC;"></i>
                                         {{ Auth::user()->name }}
 
                                     </button>

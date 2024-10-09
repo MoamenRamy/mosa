@@ -84,6 +84,11 @@ class OrderItemController extends Controller
     $request->validate([
         'count' => 'required|integer|min:1',
     ]);
+    if($orderItem->goods) {
+        $good = Goods::findOrFail($orderItem->goods_id);
+        $good->count = $good->count - ($request->count - $orderItem->count);
+        $good->save();
+    }
 
     // Update the count field
     $orderItem->count = $request->count;
@@ -95,6 +100,7 @@ class OrderItemController extends Controller
     $orderItem->order->updated_at = Carbon::now();
     $orderItem->order->user_id = auth()->user()->id;
     $orderItem->order->save();
+
 
     // Return a JSON response
     return response()->json(['success' => true, 'message' => 'Count updated successfully']);
@@ -154,6 +160,11 @@ class OrderItemController extends Controller
     $order->updated_at = Carbon::now();
     $order->user_id = auth()->user()->id;
     $order->save();
+
+    if($orderItem->goods) {
+        $goods->count = $goods->count - $orderItem->count;
+        $goods->save();
+    }
 
     // Return a JSON response for the frontend
     return response()->json([

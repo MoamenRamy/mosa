@@ -16,10 +16,10 @@ class Goods extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function suppliers()
-    {
-        return $this->belongsToMany(Supplier::class, 'goods_suppliers', 'goods_id', 'supplier_id');
-    }
+    // public function suppliers()
+    // {
+    //     return $this->belongsToMany(Supplier::class, 'goods_suppliers', 'goods_id', 'supplier_id');
+    // }
 
     public function order_items()
     {

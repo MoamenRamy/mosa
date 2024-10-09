@@ -89,9 +89,21 @@ class HotelController extends Controller
         $hotel->address = $request->address;
         $hotel->stars = $request->stars;
         $hotel->sales = $request->sales;
-        $hotel->debt = $request->debt;
+        // $hotel->debt = $request->debt;
         $hotel->last_supply_date = $request->last_supply_date;
         $hotel->last_supply_count = $request->last_supply_count;
+
+        if($request->addDebt)
+        {
+            $addDebt = $hotel->debt + $request->addDebt;
+            $hotel->debt = $addDebt;
+        }
+
+        if($request->paid)
+        {
+            $paid = $hotel->debt - $request->paid;
+            $hotel->debt = $paid;
+        }
 
         $hotel->update();
 

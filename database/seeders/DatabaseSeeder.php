@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(HotelSeeder::class);
         $this->call(OrderSeeder::class);
         $this->call(Order_itemSeeder::class);
-        $this->call(GoodsSupplierSeeder::class);
+        // $this->call(GoodsSupplierSeeder::class);
         $this->call(Supplier_orderSeeder::class);
         $this->call(Supplier_order_itemSeeder::class);
     }

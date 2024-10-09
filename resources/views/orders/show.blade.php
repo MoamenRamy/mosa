@@ -132,7 +132,7 @@
     <hr>
     <div class="row p-2">
         <div class="col d-flex justify-content-center align-items-center fw-bold text-center">
-            {{$item->goods->name}}
+            {{$item->goods ? $item->goods->name : 'غير معين' }}
         </div>
         <div class="col p-0 d-flex justify-content-center align-items-center">
             <form id="count-form-{{ $item->id }}" class="text-center">

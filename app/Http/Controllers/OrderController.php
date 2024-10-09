@@ -56,7 +56,7 @@ class OrderController extends Controller
         //     }
         // }
 
-        $orders = $query->paginate(2);
+        $orders = $query->paginate(12);
 
         // If the request is an AJAX request, return the partial view
         if ($request->ajax()) {
@@ -123,6 +123,11 @@ class OrderController extends Controller
             $orderItem->total = $total;
 
             $orderItem->save();
+
+            if($orderItem->goods) {
+                $good->count = $good->count - $item['count'];
+                $good->save();
+            }
         }
         // Update the total amount in the order
         $order->update(['price' => $totalAmount]);
@@ -213,7 +218,21 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        $order->order_items()->delete();
+        // Loop through each order item
+        foreach ($order->order_items as $orderItem) {
+            // Find the related goods
+            if($orderItem->goods) {
+                $goods = $orderItem->goods;
+
+                // Increase the goods count
+                $goods->count += $orderItem->count;
+
+                // Save the updated goods count
+                $goods->save();
+            }
+        }
+
+        // $order->order_items()->delete();
 
         $order->delete();
 
@@ -225,8 +244,13 @@ class OrderController extends Controller
     // Find the order item by order_id and item id
     $orderItem = Order_item::where('order_id', $orderId)->findOrFail($itemId);
 
-    // Delete the order item
-    $orderItem->delete();
+    if($orderItem->goods) {
+        $good = Goods::findOrFail($orderItem->goods_id);
+        $good->count = $good->count + $orderItem->count;
+        $good->save();
+        // Delete the order item
+        $orderItem->delete();
+    }
 
     // Find the order
     $order = Order::findOrFail($orderId);

@@ -11,10 +11,10 @@ class Supplier extends Model
 
     protected $guarded = ['id'];
 
-    public function goods()
-    {
-        return $this->hasMany(Goods::class, 'goods_suppliers', 'supplier_id', 'goods_id');
-    }
+    // public function goods()
+    // {
+    //     return $this->hasMany(Goods::class, 'goods_suppliers', 'supplier_id', 'goods_id');
+    // }
 
     public function supplier_orders()
     {

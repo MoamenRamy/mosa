@@ -30,7 +30,7 @@
             </div>
             <div class="col d-flex justify-content-center align-items-center text-center">
                 <input style="max-width: 150px;" type="number" name="min_price" class="form-control rounded-2 mx-1" placeholder="ثمن من">
-                <i class="fa-solid fa-arrow-left"></i>
+                <i class="fa-solid fa-arrow-left" style="color: #74C0FC;"></i>
                 <input style="max-width: 150px;" type="number" name="max_price" class="form-control rounded-2 mx-1" placeholder="ثمن إلى">
             </div>
             {{-- <div class="col">
