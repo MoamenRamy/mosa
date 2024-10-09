@@ -20,10 +20,52 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = $this->order::with('hotel', 'user')->orderBy('created_at', 'desc')->paginate(12);
+        // $orders = $this->order::with('hotel', 'user')->orderBy('created_at', 'desc')->paginate(12);
+        // return view('orders.index', compact('orders'));
+        $query = Order::with(['hotel', 'user']) // Eager load the hotel and user relationships
+              ->orderBy('created_at', 'desc'); // Order by created_at in descending order
+
+        // Apply filters
+        if ($request->filled('hotel_name')) {
+            $query->whereHas('hotel', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->hotel_name . '%');
+            });
+        }
+
+        if ($request->filled('user_name')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->user_name . '%');
+            });
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->min_price);
+        }
+
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        // if ($request->filled('paid_status')) {
+        //     if ($request->paid_status == 'paid') {
+        //         $query->whereColumn('paid', '=', 'price');
+        //     } elseif ($request->paid_status == 'not_paid') {
+        //         $query->whereColumn('paid', '<', 'price');
+        //     }
+        // }
+
+        $orders = $query->paginate(2);
+
+        // If the request is an AJAX request, return the partial view
+        if ($request->ajax()) {
+            return view('orders.partials.orders_list', compact('orders'))->render();
+        }
+
+        // For non-AJAX requests, return the full view
         return view('orders.index', compact('orders'));
+
     }
 
     /**
