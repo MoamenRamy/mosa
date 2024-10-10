@@ -132,6 +132,17 @@ class OrderController extends Controller
         // Update the total amount in the order
         $order->update(['price' => $totalAmount]);
 
+        if($order->hotel){
+            $hotel = $order->hotel;
+            $hotel->debt += ($order->price - $order->paid);
+
+            $hotel->last_supply_date = Carbon::now();
+            $hotel->last_supply_count = $order->order_items->sum('count');
+            $hotel->sales += $order->price;
+
+            $hotel->save();
+        }
+
         return redirect()->route('orders.show', $order)->with('success', 'تم إضافة الطلبية بنجاح!');
     }
 
@@ -232,6 +243,17 @@ class OrderController extends Controller
             }
         }
 
+        // delete debt from hotels
+        if ($order->hotel)
+        {
+            $hotel = $order->hotel;
+            $hotel->debt -= $order->price - $order->paid;
+            $hotel->sales -= $order->price;
+
+            // Save the updated hotel debt
+            $hotel->save();
+        }
+
         // $order->order_items()->delete();
 
         $order->delete();
@@ -244,16 +266,27 @@ class OrderController extends Controller
     // Find the order item by order_id and item id
     $orderItem = Order_item::where('order_id', $orderId)->findOrFail($itemId);
 
+    // Find the order
+    $order = Order::findOrFail($orderId);
+
+    if ($order->hotel) {
+        $hotel = $order->hotel;
+        $hotel->debt -= $orderItem->total;
+        $hotel->sales -= $orderItem->total;
+
+        $hotel->save();
+    }
+
     if($orderItem->goods) {
         $good = Goods::findOrFail($orderItem->goods_id);
         $good->count = $good->count + $orderItem->count;
         $good->save();
+
         // Delete the order item
         $orderItem->delete();
     }
 
-    // Find the order
-    $order = Order::findOrFail($orderId);
+
 
     // Recalculate the total amount for the order, check if there are any remaining items
     $totalAmount = $order->order_items()->sum('total');
@@ -275,6 +308,12 @@ public function updatePaid(Request $request, $id)
         'paid' => 'required|numeric|min:0|max:' . $order->price,
     ]);
 
+    if($order->hotel){
+        $hotel = $order->hotel;
+        $hotel->debt -= ($request->paid - $order->paid);
+
+        $hotel->save();
+    }
 
     $order->paid = $request->paid;
 

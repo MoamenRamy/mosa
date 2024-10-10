@@ -41,11 +41,21 @@
             <input type="text" class="form-control rounded-2" id="address" name="address" value="{{ old('address', $supplier->address) }}">
         </div>
 
-        <!-- debt Input -->
         <div class="mb-3">
             <label for="debt" class="form-label">المديونية</label>
-            <input type="number" class="form-control rounded-2" id="debt" name="debt" value="{{ old('debt', $supplier->debt) }}" step="1" required>
+            <input type="number" class="form-control rounded-2" id="debt" name="debt" value="{{ old('debt', $supplier->debt) }}" step="1" disabled>
         </div>
+
+        <div class="mb-3">
+            <label for="addDebt" class="form-label text-success">إضافة مديونية</label>
+            <input type="number" class="form-control rounded-2" id="addDebt" name="addDebt">
+        </div>
+
+        <div class="mb-3">
+            <label for="paid" class="form-label text-danger">خصم من المديونية</label>
+            <input type="number" class="form-control rounded-2" id="paid" name="paid">
+        </div>
+
 
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">تعديل</button>

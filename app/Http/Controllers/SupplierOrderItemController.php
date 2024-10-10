@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Goods;
 use App\Models\Supplier_order_item;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -77,31 +78,40 @@ class SupplierOrderItemController extends Controller
     //  */
     public function updateCount(Request $request, $id)
 {
-    try {
-        $supplierOrderItem = $this->supplier_order_item::findOrFail($id);
+    $supplierOrderItem = $this->supplier_order_item::findOrFail($id);
 
-        // Validate the input
-        $request->validate([
-            'count' => 'required|integer|min:1',
-        ]);
-
-        // Update the count and total fields
-        $supplierOrderItem->count = $request->count;
-        $supplierOrderItem->total = $request->count * $supplierOrderItem->price;
-        $supplierOrderItem->save();
-
-        // Update the supplier order's total price
-        $supplierOrder = $supplierOrderItem->supplier_order;
-        $supplierOrder->price = $supplierOrder->supplier_order_items->sum('total');
-        $supplierOrder->updated_at = Carbon::now();
-        $supplierOrder->user_id = auth()->user()->id;
-        $supplierOrder->save();
-
-        // Return a JSON response
-        return response()->json(['success' => true, 'message' => 'Count updated successfully']);
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+    // Validate the input
+    $request->validate([
+        'count' => 'required|integer|min:1',
+    ]);
+    if($supplierOrderItem->goods) {
+        $good = Goods::findOrFail($supplierOrderItem->goods_id);
+        $good->count = $good->count + ($request->count - $supplierOrderItem->count);
+        $good->save();
     }
+    $numOfChange = $request->count - $supplierOrderItem->count;
+
+    // Update the count field
+    $supplierOrderItem->count = $request->count;
+    $supplierOrderItem->total = $request->count * $supplierOrderItem->price;
+    $supplierOrderItem->update();
+
+    $order = $supplierOrderItem->supplier_order; // Get the associated order
+    $order->price = $order->supplier_order_items->sum('total'); // Calculate the total price for all order items
+    $supplierOrderItem->supplier_order->updated_at = Carbon::now();
+    $supplierOrderItem->supplier_order->user_id = auth()->user()->id;
+    $supplierOrderItem->supplier_order->save();
+
+    if ($order->supplier)
+    {
+        $supplier = $order->supplier;
+        $supplier->debt += ($numOfChange * $supplierOrderItem->price);
+        $supplier->save();
+    }
+
+
+    // Return a JSON response
+    return response()->json(['success' => true, 'message' => 'Count updated successfully']);
 }
 
     // /**

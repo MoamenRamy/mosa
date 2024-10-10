@@ -84,7 +84,7 @@ class SupplierController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'phone' => 'required|digits:11|unique:suppliers,phone',
+            'phone' => 'required|digits:11',
         ]);
 
         $supplier->name = $request->name;
@@ -94,8 +94,20 @@ class SupplierController extends Controller
             $supplier->address = $request->address;
         }
 
-        if ($request->debt) {
-            $supplier->debt = $request->debt;
+        // if ($request->debt) {
+        //     $supplier->debt = $request->debt;
+        // }
+
+        if($request->addDebt)
+        {
+            $addDebt = $supplier->debt + $request->addDebt;
+            $supplier->debt = $addDebt;
+        }
+
+        if($request->paid)
+        {
+            $paid = $supplier->debt - $request->paid;
+            $supplier->debt = $paid;
         }
 
         $supplier->update();

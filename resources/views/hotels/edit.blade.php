@@ -34,28 +34,30 @@
         </div>
 
         <div class="mb-3">
-            <label for="stars" class="form-label">النجوم</label>
+            <label for="stars" class="form-label text-warning">النجوم</label>
             <input type="number" class="form-control rounded-2" id="stars" name="stars" value="{{ old('stars', $hotel->stars) }}" step="1" required>
         </div>
 
         <div class="mb-3">
-            <label for="sales" class="form-label">المبيعات</label>
+            <label for="sales" class="form-label text-success">المبيعات</label>
             <input type="number" class="form-control rounded-2" id="sales" name="sales" value="{{ old('sales', $hotel->sales) }}" step="1" required>
         </div>
 
         <div class="mb-3">
-            <label for="debt" class="form-label">الديون</label>
+            <label for="debt" class="form-label text-danger">الديون</label>
             <input type="number" class="form-control rounded-2" id="debt" name="debt" value="{{ old('debt', $hotel->debt) }}" step="1" disabled>
         </div>
 
-        <div class="mb-3">
-            <label for="addDebt" class="form-label">إضافة مديونية</label>
-            <input type="number" class="form-control rounded-2" id="addDebt" name="addDebt">
-        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <label for="addDebt" class="form-label text-success">إضافة مديونية +</label>
+                <input type="number" class="form-control rounded-2" id="addDebt" name="addDebt">
+            </div>
 
-        <div class="mb-3">
-            <label for="paid" class="form-label">خصم من المديونية</label>
-            <input type="number" class="form-control rounded-2" id="paid" name="paid">
+            <div class="col">
+                <label for="paid" class="form-label text-danger">خصم من المديونية -</label>
+                <input type="number" class="form-control rounded-2" id="paid" name="paid">
+            </div>
         </div>
 
         <div class="mb-3">

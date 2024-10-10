@@ -87,7 +87,8 @@
                 </div>
                 <div class="px-2 mx-2">
                     @if ($supplierOrder->created_at)
-                    {{ \Carbon\Carbon::parse($supplierOrder->created_at)->diffForHumans() }}
+                    {{-- {{ \Carbon\Carbon::parse($supplierOrder->created_at)->diffForHumans() }} --}}
+                    {{$supplierOrder->created_at}}
                     @else
                         لا يوجد تاريخ
                     @endif
@@ -132,10 +133,10 @@
     <hr>
     <div class="row p-2">
         <div class="col d-flex justify-content-center align-items-center fw-bold text-center">
-            {{$item->goods->name}}
+            {{$item->goods ? $item->goods->name : "غير معين"}}
         </div>
         <div class="col p-0 d-flex justify-content-center align-items-center">
-            <form action="{{route('supplierOrderItems.update', $item->id)}}" id="count-form-{{ $item->id }}" class="text-center">
+            <form id="count-form-{{ $item->id }}" class="text-center">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
@@ -204,9 +205,12 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('#paid-input').on('change', function() {
+        // Prevent form submission and handle AJAX
+        $('form').on('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
             var orderId = {{$supplierOrder->id}}; // Get the order ID
-            var paidAmount = $(this).val(); // Get the input value
+            var paidAmount = $('#paid-input').val(); // Get the input value
 
             // Send the AJAX request
             $.ajax({
@@ -230,6 +234,7 @@
             });
         });
     });
-    </script>
+</script>
+
 
 @endsection

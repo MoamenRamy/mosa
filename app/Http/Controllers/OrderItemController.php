@@ -90,6 +90,9 @@ class OrderItemController extends Controller
         $good->save();
     }
 
+    $numOfChange = $request->count - $orderItem->count;
+
+
     // Update the count field
     $orderItem->count = $request->count;
     $orderItem->total = $request->count * $orderItem->price;
@@ -100,6 +103,14 @@ class OrderItemController extends Controller
     $orderItem->order->updated_at = Carbon::now();
     $orderItem->order->user_id = auth()->user()->id;
     $orderItem->order->save();
+
+    if($order->hotel)
+    {
+        $hotel = $order->hotel;
+        $hotel->debt += $numOfChange * $orderItem->price;
+        $hotel->sales += $numOfChange * $good->price;
+        $hotel->save();
+    }
 
 
     // Return a JSON response
@@ -160,6 +171,13 @@ class OrderItemController extends Controller
     $order->updated_at = Carbon::now();
     $order->user_id = auth()->user()->id;
     $order->save();
+
+    if($order->hotel) {
+        $hotel = $order->hotel;
+        $hotel->debt += $total;
+        $hotel->sales += $total;
+        $hotel->save();
+    }
 
     if($orderItem->goods) {
         $goods->count = $goods->count - $orderItem->count;

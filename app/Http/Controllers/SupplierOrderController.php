@@ -82,9 +82,22 @@ class SupplierOrderController extends Controller
             $orderItem->total = $total;
 
             $orderItem->save();
+
+            if($orderItem->goods) {
+                $good->count = $good->count + $item['count'];
+                $good->save();
+            }
         }
         // Update the total amount in the order
         $order->update(['price' => $totalAmount]);
+
+        if ($order->supplier) {
+            $supplier = Supplier::findOrFail($order->supplier_id);
+            $supplier->debt += $order->price - $order->paid;
+
+            $supplier->save();
+        }
+
 
         return redirect()->route('supplierOrders.show', $order)->with('success', 'تم أضافة الطلبية بنجاح!');
     }
@@ -176,6 +189,27 @@ class SupplierOrderController extends Controller
         $supplier_order = $this->supplierOrder::findOrFail($id);
         // $supplier_order->supplier_order_items()->delete();
 
+        // Loop through each order item
+        foreach ($supplier_order->supplier_order_items as $orderItem) {
+            // Find the related goods
+            if($orderItem->goods) {
+                $goods = $orderItem->goods;
+
+                // Increase the goods count
+                $goods->count -= $orderItem->count;
+
+                // Save the updated goods count
+                $goods->save();
+            }
+        }
+
+        if($supplier_order->supplier)
+        {
+            $supplier = $supplier_order->supplier;
+            $supplier->debt -= $supplier_order->price - $supplier_order->paid;
+            $supplier->save();
+        }
+
         $supplier_order->delete();
 
         return redirect()->route('supplierOrders.index')->with('success', 'تم مسح الطلبية بنجاح!');
@@ -186,11 +220,27 @@ class SupplierOrderController extends Controller
         // Find the order item
         $orderItem = Supplier_order_item::where('supplier_order_id', $orderId)->findOrFail($itemId);
 
-        // Delete the order item
-        $orderItem->delete();
+        if($orderItem->goods) {
+            $good = Goods::findOrFail($orderItem->goods_id);
+            $good->count = $good->count - $orderItem->count;
+            $good->save();
+            // Delete the order item
+            $orderItem->delete();
+        }
 
         // Recalculate the total amount for the order
         $order = Supplier_order::findOrFail($orderId);
+
+        if ($order->supplier) {
+            $supplier = $order->supplier;
+            $supplier->debt -= $orderItem->total;
+            $supplier->save();
+        }
+
+        // Delete the order item
+        $orderItem->delete();
+
+
 
         $totalAmount = $order->supplier_order_items->sum('total');
 
@@ -211,10 +261,20 @@ class SupplierOrderController extends Controller
             'paid' => 'required|numeric|min:0|max:' . $supplierOrder->price,
         ]);
 
+        if ($supplierOrder->supplier) {
+            $supplier = $supplierOrder->supplier;
+            $supplier->debt -= ($request->paid - $supplierOrder->paid);
+
+            $supplier->save();
+        }
+
+
 
         $supplierOrder->paid = $request->paid;
 
         $supplierOrder->save();
+
+
 
         return response()->json(['success' => true, 'message' => 'Paid amount updated successfully']);
     }

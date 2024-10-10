@@ -59,25 +59,25 @@
                     {{-- <span id="paid-display">{{$order->paid}} جنية</span> --}}
 
                     <!-- Input field to update paid amount -->
-                    <form class="d-flex justify-content-center align-items-center" action="{{route('orders.updatePaid', $order->id)}}" method="post">
-                    @csrf
-                    @method('PUT')
+                    <form id="update-paid-form" class="d-flex justify-content-center align-items-center" action="{{route('orders.updatePaid', $order->id)}}" method="post">
+                        @csrf
+                        @method('POST')
                         <input class="form-control rounded-2 text-center my-0 mx-2 {{ $errors->has('paid') ? 'is-invalid' : '' }}"
-                            type="number"
-                            id="paid-input"
-                            name="paid"
-                            value="{{ old('paid', $order->paid) }}"
-                            step="1"
-                            min="0"
-                            style="min-width: 100px;">
+                                type="number"
+                                id="paid-input"
+                                name="paid"
+                                value="{{ old('paid', $order->paid) }}"
+                                step="1"
+                                min="0"
+                                style="min-width: 100px;">
 
                         @if ($errors->has('paid'))
                             <div class="invalid-feedback">
-                                {{ $errors->first('paid') }} <!-- Display the first error message -->
+                                {{ $errors->first('paid') }}
                             </div>
                         @endif
-                            <span class="">جنية</span>
-                        </form>
+                        <span>جنية</span>
+                    </form>
                 </div>
             </div>
             <hr>
@@ -87,7 +87,8 @@
                 </div>
                 <div class="px-2 mx-2">
                     @if ($order->created_at)
-                    {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
+                    {{-- {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }} --}}
+                    {{$order->created_at}}
                     @else
                         لا يوجد تاريخ
                     @endif
@@ -140,8 +141,8 @@
                 @method('PUT')
                 <div class="mb-3">
                     <input style="max-width: 80px;" type="number" class="form-control rounded-2 text-center count-input"
-                           id="count-{{ $item->id }}" name="count" value="{{ old('count', $item->count) }}" step="1"
-                           data-item-id="{{ $item->id }}">
+                        id="count-{{ $item->id }}" name="count" value="{{ old('count', $item->count) }}" step="1"
+                        data-item-id="{{ $item->id }}">
                 </div>
             </form>
             {{-- {{$item->count}} كيلو --}}
@@ -156,7 +157,7 @@
 
         <div class="col-1 p-0 d-flex justify-content-center align-items-center text-center">
             <!-- Form to trigger DELETE request -->
-            <form class="p-2" action="{{ route('orders.destroyItem', ['orderId' => $order->id, 'itemId' => $item->id]) }}" method="POST" style="display:inline;">
+            <form action="{{ route('orders.destroyItem', ['orderId' => $order->id, 'itemId' => $item->id]) }}" method="POST" style="display:inline;">
                 @csrf
                 @method('DELETE')
                 <button type="submit" style="border: none; background: none;" onclick="return confirm('Are you sure you want to delete this item?');">
@@ -232,10 +233,13 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function() {
-    $('#paid-input').on('change', function() {
+    $(document).ready(function() {
+    // Prevent submission for the paid update form and handle AJAX
+    $('#update-paid-form').on('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
+
         var orderId = {{$order->id}}; // Get the order ID
-        var paidAmount = $(this).val(); // Get the input value
+        var paidAmount = $('#paid-input').val(); // Get the input value
 
         // Send the AJAX request
         $.ajax({
@@ -259,7 +263,9 @@ $(document).ready(function() {
         });
     });
 });
+
 </script>
+
 
 <script>
     $(document).ready(function() {
