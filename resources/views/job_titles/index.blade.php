@@ -30,12 +30,12 @@
     @foreach ($jobTitles as $job)
     <hr>
     <div class="row p-2">
-        <div class="col d-flex justify-content-center align-items-center fw-bold text-center">
+        <div class="col d-flex justify-content-center align-items-center text-center">
             <a href="{{ route('jobTitles.edit', $job) }}">
                 {{$job->name}}
             </a>
         </div>
-        <div class="col d-flex justify-content-center align-items-center fw-bold text-center">
+        <div class="col d-flex justify-content-center align-items-center text-center">
             {{$job->salary}} جنية
         </div>
         <div class="col d-flex justify-content-center align-items-center text-center">

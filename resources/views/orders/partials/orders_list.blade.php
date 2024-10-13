@@ -4,7 +4,7 @@
     <div class="col p-0 text-center fw-bold">ثمن</div>
     <div class="col p-0 text-center fw-bold">تم دفعة</div>
     <div class="col text-center fw-bold">تاريخ</div>
-    <div class="col text-center fw-bold"></div>
+    <div class="col-1 text-center fw-bold"></div>
 </div>
 @foreach ($orders as $order)
     <hr>
@@ -24,7 +24,7 @@
         <div class="col d-flex justify-content-center align-items-center text-center">
             {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
         </div>
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        <div class="col-1 d-flex justify-content-center align-items-center text-center">
             <form class="p-2" action="{{ route('orders.destroy', $order->id) }}" method="POST" style="display:inline;">
                 @csrf
                 @method('DELETE')

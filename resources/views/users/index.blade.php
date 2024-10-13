@@ -14,19 +14,19 @@
             </a> --}}
         </div>
     </div>
-    <div class="row p-2">
+    <div class="row p-2" style="font-size: 14px">
         <div class="col text-center fw-bold">
             الاسم
         </div>
-        <div class="col text-center fw-bold">
+        <div class="col-3 text-center fw-bold">
             رقم التليفون
         </div>
         <div class="col text-center fw-bold">
             الوظيفة
         </div>
-        <div class="col text-center fw-bold">
+        {{-- <div class="col text-center fw-bold">
             المرتب
-        </div>
+        </div> --}}
         <div class="col text-center fw-bold">
             الصلاحية
         </div>
@@ -36,13 +36,13 @@
     </div>
     @foreach ($users as $user)
     <hr>
-    <div class="row p-2">
+    <div class="row p-2" style="font-size: 14px">
         <div class="col d-flex justify-content-center align-items-center fw-bold text-center">
             <a href="{{ route('users.edit', $user) }}">
                 {{$user->name}}
             </a>
         </div>
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        <div class="col-3 d-flex justify-content-center align-items-center text-center">
             <a target="_blank" href="tel:{{$user->phone}}">
                 @if ($user->phone)
                 {{$user->phone}}
@@ -59,14 +59,14 @@
             @endif
 
         </div>
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        {{-- <div class="col-2 d-flex justify-content-center align-items-center text-center">
             @if ($user->jobTitle)
                 {{$user->jobTitle->salary}}
             @else
             غير معين
             @endif
 
-        </div>
+        </div> --}}
 
         <div class="col d-flex justify-content-center align-items-center text-center">
             @if ($user->role == 0)

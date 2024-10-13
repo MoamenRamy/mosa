@@ -14,35 +14,35 @@
             </a>
         </div>
     </div>
-    <div class="row p-2">
-        <div class="col text-center fw-bold">
+    <div class="row p-2" style="font-size: 14px">
+        <div class="col-2 text-center fw-bold">
             الاسم
         </div>
-        <div class="col text-center fw-bold">
+        <div class="col-3 text-center fw-bold">
             المبيعات
         </div>
-        <div class="col text-center fw-bold">
+        <div class="col-3 text-center fw-bold">
             الديون
         </div>
-        <div class="col text-center fw-bold">
+        <div class="col-2 text-center fw-bold">
             اخر توريد
         </div>
-        <div class="col text-center fw-bold">
+        <div class="col-2 text-center fw-bold">
 
         </div>
     </div>
     @foreach ($hotels as $hotel)
     <hr>
-    <div class="row p-2">
-        <div class="col d-flex justify-content-center align-items-center fw-bold text-center">
+    <div class="row p-2" style="font-size: 14px">
+        <div class="col-2 d-flex justify-content-center align-items-center fw-bold text-center">
             <a href="{{ route('hotels.edit', $hotel) }}">
                 {{$hotel->name}}
             </a>
         </div>
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        <div class="col-3 d-flex justify-content-center align-items-center text-center">
             {{$hotel->sales}} جنية
         </div>
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        <div class="col-3 d-flex justify-content-center align-items-center text-center">
             @if ($hotel->debt)
             {{$hotel->debt}} جنية
             @else
@@ -50,7 +50,7 @@
             @endif
         </div>
 
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        <div class="col-2 d-flex justify-content-center align-items-center text-center">
             @if ($hotel->last_supply_date)
                 {{ \Carbon\Carbon::parse($hotel->last_supply_date)->diffForHumans() }}
             @else
@@ -58,7 +58,7 @@
             @endif
         </div>
 
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        <div class="col-2 d-flex justify-content-center align-items-center text-center">
             <a class="p-2" href="{{route('hotels.edit', $hotel)}}">
                 <i class="fa-regular fa-pen-to-square text-warning"></i>
             </a>

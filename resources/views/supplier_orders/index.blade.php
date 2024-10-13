@@ -32,7 +32,7 @@
         <div class="col text-center fw-bold">
             تاريخ
         </div>
-        <div class="col text-center fw-bold">
+        <div class="col-1 text-center fw-bold">
 
         </div>
     </div>
@@ -79,7 +79,7 @@
             @endif
         </div>
 
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        <div class="col-1 d-flex justify-content-center align-items-center text-center">
             {{-- <a class="p-2" href="{{route('supplierOrders.edit', $supplierOrder)}}">
                 <i class="fa-regular fa-pen-to-square text-warning"></i>
             </a> --}}

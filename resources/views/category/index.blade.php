@@ -26,7 +26,7 @@
     @foreach ($categories as $category)
     <hr>
     <div class="row p-2">
-        <div class="col d-flex justify-content-center align-items-center fw-bold text-center">
+        <div class="col d-flex justify-content-center align-items-center text-center">
             <a href="{{ route('category.edit', $category) }}">
                 {{$category->name}}
             </a>

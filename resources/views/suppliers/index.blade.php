@@ -14,32 +14,32 @@
             </a>
         </div>
     </div>
-    <div class="row p-2">
+    <div class="row p-2" style="font-size: 14px">
         <div class="col text-center fw-bold">
                 الاسم
         </div>
-        <div class="col text-center fw-bold">
+        <div class="col-3 text-center fw-bold">
             رقم التليفون
         </div>
         <div class="col text-center fw-bold">
             الديون
         </div>
-        <div class="col text-center fw-bold">
+        {{-- <div class="col text-center fw-bold">
             العنوان
-        </div>
+        </div> --}}
         <div class="col text-center fw-bold">
 
         </div>
     </div>
     @foreach ($suppliers as $supplier)
     <hr>
-    <div class="row p-2">
+    <div class="row p-2" style="font-size: 14px">
         <div class="col d-flex justify-content-center align-items-center fw-bold text-center">
             <a href="{{ route('suppliers.edit', $supplier) }}">
                 {{$supplier->name}}
             </a>
         </div>
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        <div class="col-3 d-flex justify-content-center align-items-center text-center">
             <a target="_blank" href="tel:{{$supplier->phone}}">
                 @if ($supplier->phone)
                     {{$supplier->phone}}
@@ -52,13 +52,13 @@
             {{$supplier->debt}} جنية
         </div>
 
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        {{-- <div class="col d-flex justify-content-center align-items-center text-center">
             @if ($supplier->address)
                 {{ $supplier->address }}
             @else
                 لا يوجد
             @endif
-        </div>
+        </div> --}}
 
         <div class="col d-flex justify-content-center align-items-center text-center">
             <a class="p-2" href="{{route('suppliers.edit', $supplier)}}">

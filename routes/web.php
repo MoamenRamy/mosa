@@ -66,7 +66,7 @@ Route::post('/orders/{order}/update-paid', [OrderController::class, 'updatePaid'
 
 
 Route::resource('orderItems', OrderItemController::class);
-Route::post('/orderItems/update/{id}', [OrderItemController::class, 'updateCount'])->name('orderItems.update');
+Route::post('/orderItems/update/{id}', [OrderItemController::class, 'updateCount'])->name('orderItem.update');
 Route::post('/orderItems/add/{id}', [OrderItemController::class, 'addItem'])->name('orderItem.addItem');
 
 Route::resource('suppliers', SupplierController::class);
@@ -77,7 +77,7 @@ Route::post('/supplierOrders/{order}/update-paid', [SupplierOrderController::cla
 
 
 Route::resource('supplierOrderItems', SupplierOrderItemController::class);
-Route::post('/supplierOrderItems/update/{id}', [SupplierOrderItemController::class, 'updateCount'])->name('supplierOrderItems.update');
+Route::post('/supplierOrderItems/update/{id}', [SupplierOrderItemController::class, 'updateCount'])->name('supplierOrderItem.update');
 
 Route::get('/financial', [FinancialController::class, 'index'])->name('financial.index');
 

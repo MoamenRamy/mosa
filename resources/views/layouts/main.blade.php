@@ -135,7 +135,7 @@
                     <ul class="navbar-nav mx-auto">
                         <li class="py-1 px-3 nav-item">
                             <a class="nav-link" href="{{route('orders.index')}}">
-                                    الطلبيات
+                                    طلبيات الفنادق
                             </a>
                         </li>
                         <li class="py-1 px-3 nav-item">

@@ -14,45 +14,45 @@
             </a>
         </div>
     </div>
-    <div class="row p-2">
-        <div class="col text-center fw-bold">
+    <div class="row p-2" style="font-size: 14px">
+        <div class="col-2 text-center fw-bold">
             الاسم
         </div>
-        <div class="col text-center fw-bold">
+        <div class="col-3 text-center fw-bold">
             السعر
         </div>
-        <div class="col text-center fw-bold">
+        <div class="col-3 text-center fw-bold">
             الكمية
         </div>
-        <div class="col text-center fw-bold">
+        <div class="col-2 text-center fw-bold">
             التصنيف
         </div>
-        <div class="col text-center fw-bold">
+        <div class="col-2 text-center fw-bold">
 
         </div>
     </div>
     @foreach ($goods as $good)
     <hr>
-    <div class="row p-2">
-        <div class="col d-flex justify-content-center align-items-center fw-bold text-center">
+    <div class="row p-2" style="font-size: 14px">
+        <div class="col-2 d-flex justify-content-center align-items-center fw-bold text-center">
             <a href="{{ route('goods.edit', $good) }}">
                 {{$good->name}}
             </a>
         </div>
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        <div class="col-3 d-flex justify-content-center align-items-center text-center">
             {{$good->price}} جنية
         </div>
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        <div class="col-3 d-flex justify-content-center align-items-center text-center">
             {{$good->count}} كيلو
         </div>
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        <div class="col-2 d-flex justify-content-center align-items-center text-center">
             @if ($good->category && $good->category->name)
                 {{ $good->category->name }}
             @else
                 لا يوجد
             @endif
         </div>
-        <div class="col d-flex justify-content-center align-items-center text-center">
+        <div class="col-2 d-flex justify-content-center align-items-center text-center">
             <a class="p-2" href="{{route('goods.edit', $good)}}">
                 <i class="fa-regular fa-pen-to-square text-warning"></i>
             </a>

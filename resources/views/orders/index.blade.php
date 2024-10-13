@@ -17,21 +17,22 @@
     <!-- Filter Form -->
     <div class="filter container my-4">
         <hr>
-        <h1 class="my-4 fs-3 fw-bold">فلاتر</h1>
-        <div class="row mb-3">
+        <h1 class="mt-3 fs-3 fw-bold">فلتر</h1>
+        {{-- <div class="row mb-3">
             <div class="col d-flex justify-content-center align-items-center text-center">الاسم</div>
             <div class="col d-flex justify-content-center align-items-center text-center">سعر الطلبية</div>
             <div class="col d-flex justify-content-center align-items-center text-center"></div>
-        </div>
-        <form id="filter-form" class="row mb-5">
+        </div> --}}
+        <form id="filter-form" class="container col mb-5">
             @csrf
-            <div class="col d-flex justify-content-center align-items-center text-center">
-                <input style="max-width: 150px;" type="text" name="hotel_name" class="form-control rounded-2" placeholder="اسم الفندق">
+            <div class="row d-flex justify-content-center align-items-center text-center">
+                <input type="text" name="hotel_name" class="form-control rounded-2 mt-4 mx-5 px-3" placeholder="اسم الفندق">
             </div>
-            <div class="col d-flex justify-content-center align-items-center text-center">
-                <input style="max-width: 150px;" type="number" name="min_price" class="form-control rounded-2 mx-1" placeholder="ثمن من">
-                <i class="fa-solid fa-arrow-left" style="color: #74C0FC;"></i>
-                <input style="max-width: 150px;" type="number" name="max_price" class="form-control rounded-2 mx-1" placeholder="ثمن إلى">
+            <div class="row d-flex justify-content-center align-items-center text-center">
+                <input type="number" name="min_price" class="form-control rounded-2 mt-4 mx-5 px-3" placeholder="ثمن من">
+                {{-- <i class="fa-solid fa-arrow-left mt-2 mx-5 px-3" style="color: #74C0FC;"></i> --}}
+                <i class="fa-solid fa-arrow-down mt-2 mx-5 px-3 text-info"></i>
+                <input type="number" name="max_price" class="form-control rounded-2 mt-2 mx-5 px-3" placeholder="ثمن إلى">
             </div>
             {{-- <div class="col">
             </div> --}}
@@ -42,8 +43,8 @@
                     <option value="not_paid">لم يدفع</option>
                 </select>
             </div> --}}
-            <div class="col d-flex justify-content-center align-items-center text-center">
-                <button type="submit" class="btn btn-primary">تصفية</button>
+            <div class="row d-flex justify-content-center align-items-center text-center mt-4 mx-5 px-3">
+                <button type="submit" class="btn btn-info">تصفية</button>
             </div>
         </form>
 

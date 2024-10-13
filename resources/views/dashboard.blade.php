@@ -27,6 +27,16 @@
 
     <div class="home-cards">
         <div id="card" class="card">
+            <a class="link" href="{{route('orders.index')}}">
+                <div class="card-image"
+                    style="background-image: url('{{ asset('images/home/Payment at the Food Establishment.jpeg') }}');">
+                    <div class="card-content">
+                        <h2>طلبيات الفنادق</h2>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div id="card" class="card">
             <a class="link" href="{{route('goods.index')}}">
                 <div class="card-image"
                     style="background-image: url('{{ asset('images/home/Fresh Fish on Ice Display (2).jpeg') }}');">
