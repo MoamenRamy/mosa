@@ -153,21 +153,25 @@
                                     الفنادق
                             </a>
                         </li>
+                        @admin
                         <li class="py-1 px-3 nav-item">
                             <a class="nav-link" href="{{ route('suppliers.index') }}">
                                     الموردين
                             </a>
                         </li>
+                        
                         <li class="py-1 px-3 nav-item">
                             <a class="nav-link" href="{{ route('users.index') }}">
                                     الموظفين
                             </a>
                         </li>
+
                         <li class="py-1 px-3 nav-item">
                             <a class="nav-link" href="{{route('financial.index')}}">
                                     الحسابات
                             </a>
                         </li>
+                        @endadmin
                     </ul>
 
                     <ul class="navbar-nav mr-auto navbar-dark bg-dark">

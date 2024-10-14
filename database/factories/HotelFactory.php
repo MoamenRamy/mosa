@@ -20,8 +20,8 @@ class HotelFactory extends Factory
             'name' => $this->faker->title(),
             'address' => $this->faker->address(),
             'stars' => $this->faker->numberBetween(0, 7),
-            'sales' => $this->faker->numberBetween(0, 100000),
-            'debt' => $this->faker->numberBetween(0, 100000),
+            'sales' => $this->faker->numberBetween(50000, 100000),
+            'debt' => $this->faker->numberBetween(0, 50000),
             'last_supply_date' => $this->faker->date(),
             'last_supply_count' => $this->faker->numberBetween(1, 50)
         ];

@@ -18,9 +18,20 @@ class GoodsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $goods = $this->goods::with('category')->paginate(12);
+        $query = $this->goods::with('category');
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        $goods = $query->paginate(12);
+
+        // If the request is an AJAX request, return the partial view
+        if ($request->ajax()) {
+            return view('goods.partials.goods_list', compact('goods'))->render();
+        }
 
         return view('goods.index', compact('goods'));
     }
@@ -116,5 +127,12 @@ class GoodsController extends Controller
 
         return redirect()->route('goods.index')->with('success', 'تم مسح البضاعة بنجاح!');
         // ->with('success', 'Товар удален успешно')
+    }
+
+    public function getByCategory($categoryId)
+    {
+        $goods = Goods::where('category_id', $categoryId)->paginate(12);
+
+        return view('goods.index', compact('goods'));
     }
 }

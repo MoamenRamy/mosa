@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsEmployee;
+use App\Http\Middleware\IsSuperAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -12,7 +15,24 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // $middleware->use([
+        //     \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class,
+        //     // \Illuminate\Http\Middleware\TrustHosts::class,
+        //     \Illuminate\Http\Middleware\TrustProxies::class,
+        //     \Illuminate\Http\Middleware\HandleCors::class,
+        //     \Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class,
+        //     \Illuminate\Http\Middleware\ValidatePostSize::class,
+        //     \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
+        //     \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        //     \App\Http\Middleware\IsEmployee::class,
+        //     \App\Http\Middleware\IsAdmin::class,
+        //     \App\Http\Middleware\IsSuperAdmin::class,
+        // ]);
+        $middleware->alias([
+            'employee' => IsEmployee::class,
+            'admin' => IsAdmin::class,
+            'superAdmin' => IsSuperAdmin::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

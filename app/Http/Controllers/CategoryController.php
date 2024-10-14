@@ -17,10 +17,24 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = $this->category::paginate(12);
-        return view('category.index', compact('categories'));
+        // dd($request->all());
+
+        $query = Category::query();  // Adjust this based on how you are querying categories
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        $category = $query->paginate(12);
+
+        // If the request is an AJAX request, return the partial view
+        if ($request->ajax()) {
+            return view('category.partials.category_list', compact('category'))->render();
+        }
+
+        return view('category.index', compact('category'));
     }
 
     /**

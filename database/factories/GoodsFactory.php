@@ -19,9 +19,9 @@ class GoodsFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'price' => $this->faker->numberBetween(1000, 3000),
-            'category_id' => $this->faker->numberBetween(1, 3),
+            'category_id' => $this->faker->numberBetween(1, 20),
             // 'supplier_id' => $this->faker->numberBetween(1, 3),
-            'count' => $this->faker->numberBetween(1, 30),
+            'count' => $this->faker->numberBetween(1, 2000),
         ];
     }
 }

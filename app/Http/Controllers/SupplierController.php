@@ -17,9 +17,20 @@ class SupplierController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $suppliers = $this->supplier::paginate();
+        $query = $this->supplier::query();  // Adjust this based on how you are querying categories
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        $suppliers = $query->paginate(12);
+
+        // If the request is an AJAX request, return the partial view
+        if ($request->ajax()) {
+            return view('suppliers.partials.suppliers_list', compact('suppliers'))->render();
+        }
         return view('suppliers.index', compact('suppliers'));
     }
 

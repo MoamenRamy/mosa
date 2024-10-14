@@ -17,10 +17,10 @@ class Supplier_order_itemFactory extends Factory
     public function definition(): array
     {
         return [
-            'supplier_order_id' => $this->faker->numberBetween(1, 3),
-            'goods_id' => $this->faker->numberBetween(1, 3),
-            'price' => $this->faker->numberBetween(1000, 3000),
-            'count' => $this->faker->numberBetween(0, 3),
+            'supplier_order_id' => $this->faker->numberBetween(1, 20),
+            'goods_id' => $this->faker->numberBetween(1, 100),
+            'price' => $this->faker->numberBetween(100000, 300000),
+            'count' => $this->faker->numberBetween(1, 200),
         ];
     }
 }

@@ -81,16 +81,16 @@ class User extends Authenticatable
 
     public function employee()
     {
-        return $this->role = 1;
+        return $this->role >= 1;
     }
 
     public function isAdmin()
     {
-        return $this->role = 2;
+        return $this->role >= 2;
     }
 
     public function isSuperAdmin()
     {
-        return $this->role = 3;
+        return $this->role == 3;
     }
 }

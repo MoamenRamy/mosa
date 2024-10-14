@@ -25,6 +25,7 @@
             {{ \Carbon\Carbon::parse($order->created_at)->diffForHumans() }}
         </div>
         <div class="col-1 d-flex justify-content-center align-items-center text-center">
+            @admin
             <form class="p-2" action="{{ route('orders.destroy', $order->id) }}" method="POST" style="display:inline;">
                 @csrf
                 @method('DELETE')
@@ -32,6 +33,7 @@
                     <i class="fa-solid fa-trash text-danger"></i>
                 </button>
             </form>
+            @endadmin
         </div>
     </div>
 @endforeach

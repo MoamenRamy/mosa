@@ -3,7 +3,7 @@
 @section('title', 'الصفحة الرئيسية')
 
 @section('content')
-
+    @employee
     <div class="dashbord container text-center">
         <div class="row">
             <div class="dash col bg-success p-3 text-white">
@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-
+    @endemployee
     <div class="home-cards">
         <div id="card" class="card">
             <a class="link" href="{{route('orders.index')}}">
@@ -66,6 +66,7 @@
                 </div>
             </a>
         </div>
+        @admin
         <div id="card" class="card">
             <a class="link" href="{{ route('suppliers.index') }}">
                 <div class="card-image"
@@ -76,6 +77,7 @@
                 </div>
             </a>
         </div>
+        
         <div id="card" class="card">
             <a class="link" href="{{ route('users.index') }}">
                 <div class="card-image"
@@ -86,6 +88,7 @@
                 </div>
             </a>
         </div>
+
         <div id="card" class="card">
             <a class="link" href="{{route('financial.index')}}">
                 <div class="card-image"
@@ -96,6 +99,7 @@
                 </div>
             </a>
         </div>
+        @endadmin
 
         </div>
     </div>

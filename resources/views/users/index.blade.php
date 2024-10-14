@@ -81,6 +81,7 @@
         </div>
 
         <div class="col d-flex justify-content-center align-items-center text-center">
+            @superAdmin
             <a class="p-2" href="{{route('users.edit', $user)}}">
                 <i class="fa-regular fa-pen-to-square text-warning"></i>
             </a>
@@ -92,6 +93,7 @@
                     <i class="fa-solid fa-trash text-danger"></i>
                 </button>
             </form>
+            @endsuperAdmin
         </div>
     </div>
     @endforeach

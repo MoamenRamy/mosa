@@ -34,11 +34,11 @@ class OrderController extends Controller
             });
         }
 
-        if ($request->filled('user_name')) {
-            $query->whereHas('user', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->user_name . '%');
-            });
-        }
+        // if ($request->filled('user_name')) {
+        //     $query->whereHas('user', function ($q) use ($request) {
+        //         $q->where('name', 'like', '%' . $request->user_name . '%');
+        //     });
+        // }
 
         if ($request->filled('min_price')) {
             $query->where('price', '>=', $request->min_price);

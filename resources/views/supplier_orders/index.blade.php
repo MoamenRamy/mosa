@@ -13,135 +13,112 @@
             </a>
         </div>
     </div>
-    <div class="row p-2" style="font-size: 14px">
-        <div class="col-1 text-center fw-bold">
-            رقم
-        </div>
-        <div class="col text-center fw-bold">
-            اسم المورد
-        </div>
-        {{-- <div class="col text-center fw-bold">
-            الموظف
+
+    <!-- Filter Form -->
+    <div class="filter container my-4">
+        <hr>
+        <h1 class="mt-3 fs-3 fw-bold">فلتر</h1>
+        {{-- <div class="row mb-3">
+            <div class="col d-flex justify-content-center align-items-center text-center">الاسم</div>
+            <div class="col d-flex justify-content-center align-items-center text-center">سعر الطلبية</div>
+            <div class="col d-flex justify-content-center align-items-center text-center"></div>
         </div> --}}
-        <div class="col p-0 text-center fw-bold">
-            ثمن
-        </div>
-        <div class="col p-0 text-center fw-bold">
-            تم دفعة
-        </div>
-        <div class="col text-center fw-bold">
-            تاريخ
-        </div>
-        <div class="col-1 text-center fw-bold">
+        <form id="filter-form" class="container col mb-5">
+            @csrf
+            <div class="row d-flex justify-content-center align-items-center text-center">
+                <input type="text" name="supplier_name" class="form-control rounded-2 mt-4 mx-5 px-3" placeholder="اسم المورد">
+            </div>
+            <div class="row d-flex justify-content-center align-items-center text-center">
+                <input type="number" name="min_price" class="form-control rounded-2 mt-4 mx-5 px-3" placeholder="ثمن من">
+                {{-- <i class="fa-solid fa-arrow-left mt-2 mx-5 px-3" style="color: #74C0FC;"></i> --}}
+                <i class="fa-solid fa-arrow-down mt-2 mx-5 px-3 text-info"></i>
+                <input type="number" name="max_price" class="form-control rounded-2 mt-2 mx-5 px-3" placeholder="ثمن إلى">
+            </div>
+            {{-- <div class="col">
+            </div> --}}
+            {{-- <div class="col-md-3">
+                <select name="paid_status" class="form-control">
+                    <option value="">كل الحالات</option>
+                    <option value="paid">مدفوع</option>
+                    <option value="not_paid">لم يدفع</option>
+                </select>
+            </div> --}}
+            <div class="row d-flex justify-content-center align-items-center text-center mt-4 mx-5 px-3">
+                <button type="submit" class="btn btn-info">تصفية</button>
+            </div>
+        </form>
 
-        </div>
     </div>
-    @foreach ($supplierOrders as $supplierOrder)
-    <hr>
-    <div class="row p-2" style="font-size: 14px">
-        <div class="col-1 d-flex justify-content-center align-items-center fw-bold text-center">
-            <a class="no-hover" href="{{ route('supplierOrders.show', $supplierOrder) }}">
-                {{$supplierOrder->id}}
-            </a>
-        </div>
-        <div class="col d-flex justify-content-center align-items-center text-center">
-            @if ($supplierOrder->supplier)
-                {{$supplierOrder->supplier->name}}
-            @else
-                لا يوجد
-            @endif
-        </div>
-        {{-- <div class="col d-flex justify-content-center align-items-center text-center">
-            @if ($supplierOrder->user)
-                {{$supplierOrder->user->name}}
-            @else
-                لا يوجد
-            @endif
-        </div> --}}
 
-        <div class="col d-flex justify-content-center align-items-center p-0 text-center">
-            {{$supplierOrder->price}} جنية
-        </div>
-
-        <div class="col d-flex justify-content-center align-items-center p-0 text-center">
-            @if ($supplierOrder->paid == $supplierOrder->price)
-                مدفوع
-            @else
-                {{$supplierOrder->paid}} جنية
-            @endif
-        </div>
-
-        <div class="col d-flex justify-content-center align-items-center text-center">
-            @if ($supplierOrder->created_at)
-                {{ \Carbon\Carbon::parse($supplierOrder->created_at)->diffForHumans() }}
-            @else
-                لا يوجد تاريخ
-            @endif
-        </div>
-
-        <div class="col-1 d-flex justify-content-center align-items-center text-center">
-            {{-- <a class="p-2" href="{{route('supplierOrders.edit', $supplierOrder)}}">
-                <i class="fa-regular fa-pen-to-square text-warning"></i>
-            </a> --}}
-            <!-- Form to trigger DELETE request -->
-            <form class="p-2" action="{{ route('supplierOrders.destroy', $supplierOrder->id) }}" method="POST" style="display:inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" style="border: none; background: none;" onclick="return confirm('Are you sure you want to delete this item?');">
-                    <i class="fa-solid fa-trash text-danger"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-    @endforeach
-
-    <!-- Pagination Links -->
-    <div class="d-flex justify-content-center mt-4">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-
-                {{-- Previous Page Link --}}
-                @if ($supplierOrders->onFirstPage())
-                    <li class="page-item disabled mx-1"><a class="page-link">السابق</a></li>
-                @else
-                    <li class="page-item mx-1"><a class="page-link" href="{{ $supplierOrders->previousPageUrl() }}">السابق</a></li>
-                @endif
-
-                {{-- First Page Link --}}
-                @if ($supplierOrders->currentPage() > 2)
-                    <li class="page-item"><a class="page-link" href="{{ $supplierOrders->url(1) }}">1</a></li>
-                    @if ($supplierOrders->currentPage() > 3)
-                        <li class="page-item disabled"><a class="page-link">...</a></li>
-                    @endif
-                @endif
-
-                {{-- Page Links Around Current Page --}}
-                @for ($i = max($supplierOrders->currentPage() - 1, 1); $i <= min($supplierOrders->currentPage() + 1, $supplierOrders->lastPage()); $i++)
-                    @if ($i == $supplierOrders->currentPage())
-                        <li class="page-item active"><a class="page-link">{{ $i }}</a></li>
-                    @else
-                        <li class="page-item"><a class="page-link" href="{{ $supplierOrders->url($i) }}">{{ $i }}</a></li>
-                    @endif
-                @endfor
-
-                {{-- Last Page Link --}}
-                @if ($supplierOrders->currentPage() < $supplierOrders->lastPage() - 1)
-                    @if ($supplierOrders->currentPage() < $supplierOrders->lastPage() - 2)
-                        <li class="page-item disabled"><a class="page-link">...</a></li>
-                    @endif
-                    <li class="page-item"><a class="page-link" href="{{ $supplierOrders->url($supplierOrders->lastPage()) }}">{{ $supplierOrders->lastPage() }}</a></li>
-                @endif
-
-                {{-- Next Page Link --}}
-                @if ($supplierOrders->hasMorePages())
-                    <li class="page-item mx-1"><a class="page-link" href="{{ $supplierOrders->nextPageUrl() }}">التالي</a></li>
-                @else
-                    <li class="page-item disabled mx-1"><a class="page-link">التالي</a></li>
-                @endif
-
-            </ul>
-        </nav>
+    <!-- Orders List -->
+    <div id="supplier-orders-list">
+        @include('supplier_orders.partials.supplier_orders_list', ['supplierOrders' => $supplierOrders])
     </div>
 </div>
+
+
+@endsection
+
+@section('script')
+
+<!-- Include jQuery -->
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#filter-form').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{{ route('orders.index') }}", // Replace with your route URL
+                type: 'GET',
+                data: $(this).serialize(), // Serialize form data
+                success: function(response) {
+                    // Replace the current orders list with the new filtered list
+                    $('#orders-list').html(response);
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    });
+</script> --}}
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#filter-form').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{{ route('supplierOrders.index') }}", // Replace with your route URL
+                type: 'GET',
+                data: $(this).serialize(), // Serialize form data
+                success: function(response) {
+                    // Replace the current orders list with the new filtered list
+                    $('#supplier-orders-list').html(response);
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).on('click', '.pagination a', function(e) {
+    e.preventDefault();
+    var page = $(this).attr('href').split('page=')[1];
+
+    $.ajax({
+        url: "{{ route('supplierOrders.index') }}?page=" + page + "&" + $('#filter-form').serialize(),
+        success: function(response) {
+            $('#supplier-orders-list').html(response);
+        }
+    });
+});
+</script>
 
 @endsection

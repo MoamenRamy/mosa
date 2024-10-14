@@ -35,6 +35,7 @@
         </div>
 
     </a> --}}
+    @superAdmin
     <a href="{{route('totalMonth.index')}}" class="d-flex justify-content-center align-items-center bg-dark text-white text-center fs-4 m-3 mt-4 rounded-2 no-hover">
         <div class="p-2 m-2 no-hover">
             اجمالي الشهر
@@ -53,6 +54,7 @@
         </div>
 
     </a>
+    @endsuperAdmin
 
 </div>
 

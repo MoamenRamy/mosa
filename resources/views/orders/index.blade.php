@@ -56,8 +56,13 @@
     </div>
 </div>
 
+
+@endsection
+
+@section('script')
+
 <!-- Include jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -77,12 +82,7 @@
             });
         });
     });
-</script>
-
-
-@endsection
-
-@section('script')
+</script> --}}
 
 <!-- Include jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

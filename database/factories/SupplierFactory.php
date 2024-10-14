@@ -20,7 +20,7 @@ class SupplierFactory extends Factory
             'name' => $this->faker->name(),
             'phone' => $this->faker->phoneNumber(),
             'address' => $this->faker->address(),
-            'debt' => $this->faker->numberBetween(1000, 30000),
+            'debt' => $this->faker->numberBetween(100000, 3000000),
         ];
     }
 }
