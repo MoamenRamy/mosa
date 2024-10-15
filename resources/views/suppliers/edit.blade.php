@@ -32,7 +32,7 @@
         <!-- Phone Input -->
         <div class="mb-3">
             <label for="phone" class="form-label">رقم التليفون</label>
-            <input type="text" class="form-control rounded-2" id="phone" name="phone" value="{{ old('phone', $supplier->phone) }}">
+            <input type="text" class="form-control rounded-2" id="phone" name="phone" value="{{ old('phone', $supplier->phone) }}" required>
         </div>
 
         <!-- address Input -->

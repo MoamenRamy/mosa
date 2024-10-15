@@ -72,10 +72,10 @@ class HotelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Hotel $hotel)
-    {
-        return view('hotels.show', compact('hotel'));
-    }
+    // public function show(Hotel $hotel)
+    // {
+    //     return view('hotels.show', compact('hotel'));
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -127,7 +127,13 @@ class HotelController extends Controller
      */
     public function destroy(Hotel $hotel)
     {
-        $hotel->delete();
-        return redirect()->route('hotels.index')->with('success', 'تم مسح الفندق بنجاح!');
+        if($hotel->debt <= 0) {
+            $hotel->delete();
+            return redirect()->route('hotels.index')->with('success', 'تم مسح الفندق بنجاح!');
+        }
+        else {
+            return redirect()->route('hotels.index')->with('fail', 'لا يمكن مسح هذا الفندق حتي سداد الديون!');
+        }
+
     }
 }

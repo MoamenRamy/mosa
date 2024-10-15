@@ -15,16 +15,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        $this->call(JobTitleSeeder::class);
+        // $this->call(JobTitleSeeder::class);
         $this->call(UserSeeder::class);
-        $this->call(CategorySeeder::class);
-        $this->call(SupplierSeeder::class);
-        $this->call(GoodsSeeder::class);
-        $this->call(HotelSeeder::class);
-        $this->call(OrderSeeder::class);
-        $this->call(Order_itemSeeder::class);
+        // $this->call(CategorySeeder::class);
+        // $this->call(SupplierSeeder::class);
+        // $this->call(GoodsSeeder::class);
+        // $this->call(HotelSeeder::class);
+        // $this->call(OrderSeeder::class);
+        // $this->call(Order_itemSeeder::class);
         // $this->call(GoodsSupplierSeeder::class);
-        $this->call(Supplier_orderSeeder::class);
-        $this->call(Supplier_order_itemSeeder::class);
+        // $this->call(Supplier_orderSeeder::class);
+        // $this->call(Supplier_order_itemSeeder::class);
     }
 }

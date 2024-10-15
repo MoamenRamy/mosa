@@ -48,11 +48,11 @@ class JobTitleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
-    {
-        $jobTitle = JobTitle::find($id);
-        return view('job_titles.show', compact('jobTitle'));
-    }
+    // public function show($id)
+    // {
+    //     $jobTitle = JobTitle::find($id);
+    //     return view('job_titles.show', compact('jobTitle'));
+    // }
 
     /**
      * Show the form for editing the specified resource.

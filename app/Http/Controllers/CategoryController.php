@@ -68,12 +68,12 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
-    {
-        // we will remove this function
-        $category = $this->category::findOrFail($id);
-        return view('category.show', compact('category'));
-    }
+    // public function show($id)
+    // {
+    //     // we will remove this function
+    //     $category = $this->category::findOrFail($id);
+    //     return view('category.show', compact('category'));
+    // }
 
     /**
      * Show the form for editing the specified resource.

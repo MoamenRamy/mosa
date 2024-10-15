@@ -156,71 +156,71 @@ class SupplierOrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Supplier_order $supplier_order)
-    {
-        return view('supplier_orders.edit', compact('supplier_order'));
-    }
+    // public function edit(Supplier_order $supplier_order)
+    // {
+    //     return view('supplier_orders.edit', compact('supplier_order'));
+    // }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Supplier_order $supplier_order)
-    {
-        $validatedData = $request->validate([
-            'supplier_id' => 'required|exists:suppliers,id',
-            'user_id' => 'required|exists:users,id',
-            // 'paid' => 'required|boolean',
-            // 'price' => 'required|numeric|min:0',
-            // 'order_items' => 'required|array',
-            // 'order_items.*.product_id' => 'required|exists:products,id',
-            'supplier_order_items' => 'required|array',
-            'supplier_order_items.*.goods_id' => 'required|exists:goods,id',
-            'supplier_order_items.*.count' => 'required|integer|min:1',
-            'supplier_order_items.*.price' => 'required|numeric|min:0',
-            ]);
+    // /**
+    //  * Update the specified resource in storage.
+    //  */
+    // public function update(Request $request, Supplier_order $supplier_order)
+    // {
+    //     $validatedData = $request->validate([
+    //         'supplier_id' => 'required|exists:suppliers,id',
+    //         'user_id' => 'required|exists:users,id',
+    //         // 'paid' => 'required|boolean',
+    //         // 'price' => 'required|numeric|min:0',
+    //         // 'order_items' => 'required|array',
+    //         // 'order_items.*.product_id' => 'required|exists:products,id',
+    //         'supplier_order_items' => 'required|array',
+    //         'supplier_order_items.*.goods_id' => 'required|exists:goods,id',
+    //         'supplier_order_items.*.count' => 'required|integer|min:1',
+    //         'supplier_order_items.*.price' => 'required|numeric|min:0',
+    //         ]);
 
-        // Create the order
-        $supplier_order->update([
-            'user_id' => $validatedData['user_id'],
-            'supplier_id' => $validatedData['supplier_id'],
-            'price' => 0, // Will be calculated later
-            'paid' => $request->paid,
-        ]);
+    //     // Create the order
+    //     $supplier_order->update([
+    //         'user_id' => $validatedData['user_id'],
+    //         'supplier_id' => $validatedData['supplier_id'],
+    //         'price' => 0, // Will be calculated later
+    //         'paid' => $request->paid,
+    //     ]);
 
-        // Initialize total amount
-        $totalAmount = 0;
-        // Create order items
-        foreach ($validatedData['supplier_order_items'] as $item) {
+    //     // Initialize total amount
+    //     $totalAmount = 0;
+    //     // Create order items
+    //     foreach ($validatedData['supplier_order_items'] as $item) {
 
-        $total = $item['count'] * $item['price'];
-        $totalAmount += $total;
+    //     $total = $item['count'] * $item['price'];
+    //     $totalAmount += $total;
 
-        if (isset($item['id'])) {
-            // Update existing order item
-            $orderItem = Supplier_order_item::findOrFail($item['id']);
-            $orderItem->update([
-                'goods_id' => $item['goods_id'],
-                'count' => $item['count'],
-                'price' => $item['price'],
-                'total' => $total,
-            ]);
-        } else {
-            // Create new order item
-            Supplier_order_item::create([
-                'supplier_order_id' => $supplier_order->id,
-                'goods_id' => $item['goods_id'],
-                'count' => $item['count'],
-                'price' => $item['price'],
-                'total' => $total,
-            ]);
-        }
-        }
-        // Update the total amount in the order
-        $supplier_order->update(['price' => $totalAmount]);
+    //     if (isset($item['id'])) {
+    //         // Update existing order item
+    //         $orderItem = Supplier_order_item::findOrFail($item['id']);
+    //         $orderItem->update([
+    //             'goods_id' => $item['goods_id'],
+    //             'count' => $item['count'],
+    //             'price' => $item['price'],
+    //             'total' => $total,
+    //         ]);
+    //     } else {
+    //         // Create new order item
+    //         Supplier_order_item::create([
+    //             'supplier_order_id' => $supplier_order->id,
+    //             'goods_id' => $item['goods_id'],
+    //             'count' => $item['count'],
+    //             'price' => $item['price'],
+    //             'total' => $total,
+    //         ]);
+    //     }
+    //     }
+    //     // Update the total amount in the order
+    //     $supplier_order->update(['price' => $totalAmount]);
 
-        return redirect()->route('suppliers.index');
+    //     return redirect()->route('suppliers.index');
 
-    }
+    // }
 
     /**
      * Remove the specified resource from storage.

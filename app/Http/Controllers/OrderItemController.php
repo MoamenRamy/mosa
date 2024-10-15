@@ -19,11 +19,11 @@ class OrderItemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $orderItems = $this->orderItem::paginate(12);
-        return view('order_items.index', compact('orderItems'));
-    }
+    // public function index()
+    // {
+    //     $orderItems = $this->orderItem::paginate(12);
+    //     return view('order_items.index', compact('orderItems'));
+    // }
 
     // /**
     //  * Show the form for creating a new resource.

@@ -59,25 +59,25 @@
                     {{-- <span id="paid-display">{{$supplierOrder->paid}} جنية</span> --}}
 
                     <!-- Input field to update paid amount -->
-                    <form class="d-flex justify-content-center align-items-center" action="{{route('supplierOrders.updatePaid', $supplierOrder->id)}}" method="post">
-                    @csrf
-                    @method('POST')
+                    <form id="update-paid-form" class="d-flex justify-content-center align-items-center" action="{{route('supplierOrders.updatePaid', $supplierOrder->id)}}" method="post">
+                        @csrf
+                        @method('POST')
                         <input class="form-control rounded-2 text-center my-0 mx-2 {{ $errors->has('paid') ? 'is-invalid' : '' }}"
-                            type="number"
-                            id="paid-input"
-                            name="paid"
-                            value="{{ old('paid', $supplierOrder->paid) }}"
-                            step="1"
-                            min="0"
-                            style="min-width: 100px;">
+                                type="number"
+                                id="paid-input"
+                                name="paid"
+                                value="{{ old('paid', $supplierOrder->paid) }}"
+                                step="1"
+                                min="0"
+                                style="min-width: 100px;">
 
                         @if ($errors->has('paid'))
                             <div class="invalid-feedback">
-                                {{ $errors->first('paid') }} <!-- Display the first error message -->
+                                {{ $errors->first('paid') }}
                             </div>
                         @endif
-                            <span class="">جنية</span>
-                        </form>
+                        <span>جنية</span>
+                    </form>
                 </div>
             </div>
             <hr>
@@ -205,35 +205,36 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        // Prevent form submission and handle AJAX
-        $('form').on('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
+    // Prevent submission for the paid update form and handle AJAX
+    $('#update-paid-form').on('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
 
-            var orderId = {{$supplierOrder->id}}; // Get the order ID
-            var paidAmount = $('#paid-input').val(); // Get the input value
+        var orderId = {{$supplierOrder->id}}; // Get the order ID
+        var paidAmount = $('#paid-input').val(); // Get the input value
 
-            // Send the AJAX request
-            $.ajax({
-                url: '/supplierOrders/' + orderId + '/update-paid', // Adjust the URL to your route
-                method: 'POST',
-                data: {
-                    _token: "{{ csrf_token() }}", // Include CSRF token for security
-                    paid: paidAmount,
-                },
-                success: function(response) {
-                    if (response.success) {
-                        $('#paid-display').text(paidAmount + ' جنية'); // Update the displayed amount
-                        alert(response.message); // Show a success message
-                    } else {
-                        alert('Failed to update paid amount.');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    alert('Error: ' + xhr.responseText); // Handle the error if something goes wrong
+        // Send the AJAX request
+        $.ajax({
+            url: '/supplierOrders/' + orderId + '/update-paid', // Adjust the URL to your route
+            method: 'POST',
+            data: {
+                _token: "{{ csrf_token() }}", // Include CSRF token for security
+                paid: paidAmount,
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('#paid-display').text(paidAmount + ' جنية'); // Update the displayed amount
+                    alert(response.message); // Show a success message
+                } else {
+                    alert('Failed to update paid amount.');
                 }
-            });
+            },
+            error: function(xhr, status, error) {
+                alert('Error: ' + xhr.responseText); // Handle the error if something goes wrong
+            }
         });
     });
+});
+
 </script>
 
 

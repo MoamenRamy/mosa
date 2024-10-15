@@ -34,7 +34,7 @@
         <!-- Hotel Selection -->
         <div class="mb-4">
             <label for="hotel_id" class="form-label">اسم الفندق</label>
-            <select name="hotel_id" id="hotel_id" class="form-select">
+            <select name="hotel_id" id="hotel_id" class="form-select" required>
                 <option value="" selected disabled>اختر فندق</option>
                 @foreach($hotels as $hotel)
                     <option value="{{ $hotel->id }}">{{ $hotel->name }}</option>
@@ -48,7 +48,7 @@
             <div class="order-item mb-3">
                 <div class="mb-4">
                     <label for="goods_id" class="form-label">المنتج</label>
-                    <select name="order_items[0][goods_id]" class="form-select">
+                    <select name="order_items[0][goods_id]" class="form-select" required>
                         @foreach($goods as $good)
                             <option value="{{ $good->id }}">{{ $good->name }}</option>
                         @endforeach
@@ -57,7 +57,7 @@
 
                 <div class="mb-4">
                     <label for="count" class="form-label">الكمية / كيلو</label>
-                    <input type="number" name="order_items[0][count]" class="form-control rounded-2" min="1">
+                    <input type="number" name="order_items[0][count]" class="form-control rounded-2" min="1" required>
                 </div>
 
                 {{-- <div class="mb-2">
@@ -93,7 +93,7 @@
         newOrderItem.innerHTML = `
             <div class="mb-2">
                 <label for="goods_id" class="form-label">المنتج</label>
-                <select name="order_items[${itemIndex}][goods_id]" class="form-select">
+                <select name="order_items[${itemIndex}][goods_id]" class="form-select" required>
                     @foreach($goods as $good)
                         <option value="{{ $good->id }}">{{ $good->name }}</option>
                     @endforeach
@@ -102,7 +102,7 @@
 
             <div class="mb-2">
                 <label for="count" class="form-label">الكمية / كيلو</label>
-                <input type="number" name="order_items[${itemIndex}][count]" class="form-control" min="1">
+                <input type="number" name="order_items[${itemIndex}][count]" class="form-control" min="1" required>
             </div>
         `;
 

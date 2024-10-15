@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('address');
             $table->integer('stars');
             $table->decimal('sales', 14, 2)->default(0); // total of sales to this hotel
-            $table->decimal('debt', 14, 2)->nullable();
+            $table->decimal('debt', 14, 2)->default(0);
             $table->date('last_supply_date')->nullable();
             $table->decimal('last_supply_count')->nullable();
             $table->timestamps();

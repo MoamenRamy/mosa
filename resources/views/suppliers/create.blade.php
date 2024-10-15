@@ -31,7 +31,7 @@
         <!-- Phone Input -->
         <div class="mb-3">
             <label for="phone" class="form-label">رقم التليفون</label>
-            <input type="text" class="form-control rounded-2" id="phone" name="phone" value="{{ old('phone') }}">
+            <input type="text" class="form-control rounded-2" id="phone" name="phone" value="{{ old('phone') }}" required>
         </div>
 
         <!-- address Input -->
@@ -43,7 +43,7 @@
         <!-- debt Input -->
         <div class="mb-3">
             <label for="debt" class="form-label">المديونية</label>
-            <input type="number" class="form-control rounded-2" id="debt" name="debt" value="{{ old('debt') }}" step="1" required>
+            <input type="number" class="form-control rounded-2" id="debt" name="debt" value="{{ old('debt') }}" step="1">
         </div>
 
         <!-- Submit Button -->

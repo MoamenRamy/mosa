@@ -40,7 +40,7 @@
 
         <div class="mb-3">
             <label for="sales" class="form-label">المبيعات</label>
-            <input type="number" class="form-control rounded-2" id="sales" name="sales" value="{{ old('sales') }}" step="1" required>
+            <input type="number" class="form-control rounded-2" id="sales" name="sales" value="{{ old('sales') }}" step="1">
         </div>
 
         <div class="mb-3">

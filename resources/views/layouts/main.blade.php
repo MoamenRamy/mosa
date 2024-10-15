@@ -159,7 +159,7 @@
                                     الموردين
                             </a>
                         </li>
-                        
+
                         <li class="py-1 px-3 nav-item">
                             <a class="nav-link" href="{{ route('users.index') }}">
                                     الموظفين
@@ -272,6 +272,13 @@
                 <div class="container">
                     <div class="alert alert-success" role="alert">
                         {{ session('success') }}
+                    </div>
+                </div>
+            @endif
+            @if(session('fail'))
+                <div class="container">
+                    <div class="alert alert-danger" role="alert">
+                        {{ session('fail') }}
                     </div>
                 </div>
             @endif

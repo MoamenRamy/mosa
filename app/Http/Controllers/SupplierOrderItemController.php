@@ -19,11 +19,11 @@ class SupplierOrderItemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $supplier_order_items = $this->supplier_order_item::paginate(12);
-        return view('supplier_order_items.index', compact('supplier_order_items'));
-    }
+    // public function index()
+    // {
+    //     $supplier_order_items = $this->supplier_order_item::paginate(12);
+    //     return view('supplier_order_items.index', compact('supplier_order_items'));
+    // }
 
     // /**
     //  * Show the form for creating a new resource.

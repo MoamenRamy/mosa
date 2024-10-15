@@ -74,10 +74,10 @@ class GoodsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(goods $goods)
-    {
-        return view('goods.show', compact('goods'));
-    }
+    // public function show(goods $goods)
+    // {
+    //     return view('goods.show', compact('goods'));
+    // }
 
     /**
      * Show the form for editing the specified resource.

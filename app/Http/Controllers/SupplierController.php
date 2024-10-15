@@ -75,10 +75,10 @@ class SupplierController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Supplier $supplier)
-    {
-        return view('suppliers.show', compact('supplier'));
-    }
+    // public function show(Supplier $supplier)
+    // {
+    //     return view('suppliers.show', compact('supplier'));
+    // }
 
     /**
      * Show the form for editing the specified resource.
