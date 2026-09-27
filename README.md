@@ -1,31 +1,30 @@
-###MOSA — Hotel Supply Management System
+MOSA — Hotel Supply Management System
 
-A Laravel-based business management system built to manage hotel supplies, products, categories, hotels, suppliers, employees, job titles, and orders through a centralized administrative platform.
+A Laravel-based business management system designed to manage hotel supplies, products, categories, hotels, suppliers, employees, job titles, and orders through a centralized administrative platform.
 
-The system is designed to simplify and organize the workflow between suppliers, products, hotels, and internal employees, replacing manual business processes with a structured database-driven application.
+The system is designed to organize the workflow between hotels, suppliers, products, and internal employees using a structured relational database and role-based access control.
 
 ---
 
 📌 Project Overview
 
-MOSA is a business management application developed with Laravel, MySQL, Blade, Bootstrap, JavaScript, and AJAX.
+MOSA is a business management application built with Laravel, MySQL, Blade, Bootstrap, JavaScript, and AJAX.
 
-The platform provides an administrative interface for managing the company's core business operations, including:
+The system provides an administrative platform for managing:
 
-- Products & supplies
-- Product categories
-- Hotels
-- Suppliers
-- Orders
-- Supplier orders
-- Employees
-- Job titles
-- User roles
-- Administrative data
+- 📦 Products & Supplies
+- 🗂️ Product Categories
+- 🏨 Hotels
+- 🚚 Suppliers
+- 🧾 Orders
+- 📋 Supplier Orders
+- 👥 Employees
+- 💼 Job Titles
+- 🔐 Users & Roles
 
 ---
 
-✨ Main Features
+✨ Features
 
 📦 Products & Supplies
 
@@ -35,19 +34,19 @@ Manage the products and goods supplied to hotels.
 - Update products
 - Delete products
 - View product information
-- Organize products by category
-- Manage product-related data
+- Assign products to categories
+- Manage product-related information
 
 ---
 
 🗂️ Categories
 
-Products can be organized into categories to make supply management easier.
+Organize products and supplies into categories.
 
 - Create categories
-- Edit categories
+- Update categories
 - Delete categories
-- View category information
+- View categories
 - Associate products with categories
 
 ---
@@ -56,168 +55,199 @@ Products can be organized into categories to make supply management easier.
 
 Manage hotels that receive products and supplies.
 
-The hotel management module allows administrators to maintain hotel records and connect them with their related orders.
+- Add hotels
+- Update hotel information
+- Delete hotels
+- View hotel information
+- Manage hotel-related orders
 
 ---
 
 🚚 Suppliers
 
-Manage the company's suppliers and their related supply operations.
+Manage suppliers and their related supply operations.
 
-Supplier records can be connected to supplier orders, making it easier to track where products are coming from.
+- Add suppliers
+- Update supplier information
+- Delete suppliers
+- View supplier information
+- Manage supplier orders
 
 ---
 
 🧾 Orders
 
-The application provides order management for the business workflow.
+Manage hotel supply orders through a centralized workflow.
 
-Orders can be associated with the relevant:
+Orders can be associated with:
 
-- Hotel
-- Supplier
+- Hotels
+- Suppliers
 - Products
-- Employee
-- Order information
-
-This creates a structured process for managing hotel supply requests.
+- Employees
 
 ---
 
 📋 Supplier Orders
 
-Supplier orders are handled separately to provide better organization of purchasing and supply operations.
+Supplier orders provide a separate workflow for managing products received from suppliers.
 
-Hotel Request
-      ↓
+Hotel
+  │
+  ▼
 Order
-      ↓
+  │
+  ▼
 Supplier
-      ↓
+  │
+  ▼
 Supplier Order
-      ↓
+  │
+  ▼
 Products
 
 ---
 
 👥 Employees
 
-The system provides employee management for internal business operations.
+Manage employees within the organization.
 
-Employee information can be organized according to:
+Employee information can be associated with:
 
-- Job title
-- Role
+- Job titles
+- Roles
 - Organizational information
 
 ---
 
 💼 Job Titles
 
-Job titles provide an organizational structure for employees.
+Manage job titles used throughout the organization.
 
-Administrators can manage available job titles and assign them to employees.
+- Create job titles
+- Update job titles
+- Delete job titles
+- Assign job titles to employees
 
 ---
 
-🔐 Roles & Access Control
+🔐 Authentication & Authorization
 
-The application uses role-based middleware to control access to administrative sections.
+The application uses role-based access control to restrict access to administrative functionality.
 
-Different roles can be granted access to different parts of the system.
+Different roles can access different areas of the system.
 
-Protected areas can include:
+Protected sections can include:
 
-- Products
-- Categories
-- Hotels
-- Suppliers
-- Orders
-- Employees
-- Job titles
-- Users
-- Administrative operations
+- User management
+- Product management
+- Category management
+- Hotel management
+- Supplier management
+- Order management
+- Employee management
+- Job title management
 
-This helps prevent unauthorized users from accessing sensitive management functionality.
+This helps ensure that administrative operations are only available to authorized users.
 
 ---
 
 🖥️ Admin Dashboard
 
-The system provides a centralized dashboard where administrators can manage the main business entities.
+The application provides a centralized dashboard for managing the main business entities.
 
-                    MOSA
-                     │
-          ┌──────────┴──────────┐
-          │                     │
-      Products               Hotels
-          │                     │
-     Categories              Orders
-                                │
-                         ┌──────┴──────┐
-                         │             │
-                     Suppliers    Supplier Orders
-                         │
-                    Products
-                         
-                    Employees
-                         │
-                    Job Titles
+                         MOSA
+                          │
+          ┌───────────────┼───────────────┐
+          │               │               │
+       Products         Hotels        Suppliers
+          │               │               │
+      Categories        Orders      Supplier Orders
+          │               │               │
+          └───────────────┼───────────────┘
+                          │
+                      Employees
+                          │
+                      Job Titles
 
 ---
 
 ⚡ AJAX & Dynamic Operations
 
-Selected administrative operations use AJAX to update information without requiring a complete page refresh.
+The application uses AJAX for selected administrative operations.
 
-This provides a smoother experience when working with management tables and forms.
+This allows specific data to be updated dynamically without requiring a full page reload.
 
 Examples include:
 
 - Inline updates
 - Dynamic data changes
 - Asynchronous CRUD operations
-- Dashboard interactions
+- Administrative interactions
 
 ---
 
-📊 Data Management
+🗄️ Database Structure
 
-The application is built around relational database entities and Laravel Eloquent relationships.
+The system is based on a relational database structure connecting the main business entities.
 
-The main business entities include:
+Roles
+  │
+  └── Users
 
-Users
- │
- └── Roles
+Job Titles
+  │
+  └── Employees
 
-Employees
- │
- └── Job Titles
-
-Products
- │
- └── Categories
+Categories
+  │
+  └── Products
 
 Hotels
- │
- └── Orders
+  │
+  └── Orders
 
 Suppliers
- │
- └── Supplier Orders
+  │
+  └── Supplier Orders
 
 Orders
- │
- ├── Hotels
- │
- ├── Products
- │
- └── Employees
+  │
+  ├── Hotels
+  ├── Products
+  └── Employees
+
+Laravel Eloquent ORM is used to manage the relationships between these entities.
 
 ---
 
-🛠️ Technology Stack
+🔄 Business Workflow
+
+A typical hotel supply workflow:
+
+        Hotel
+          │
+          ▼
+   Supply Request
+          │
+          ▼
+        Order
+          │
+          ▼
+      Supplier
+          │
+          ▼
+  Supplier Order
+          │
+          ▼
+       Products
+          │
+          ▼
+      Delivery
+
+---
+
+🛠️ Tech Stack
 
 Backend
 
@@ -246,9 +276,9 @@ Development Tools
 
 ---
 
-🏗️ Application Architecture
+🏗️ Project Architecture
 
-The application follows the Laravel MVC architecture.
+The project follows the Laravel MVC architecture.
 
 mosa/
 │
@@ -282,34 +312,6 @@ mosa/
 
 ---
 
-🔄 Business Workflow
-
-A typical hotel supply workflow can be represented as:
-
-                    Hotel
-                      │
-                      ▼
-               Supply Request
-                      │
-                      ▼
-                    Order
-                      │
-                      ▼
-                  Supplier
-                      │
-                      ▼
-              Supplier Order
-                      │
-                      ▼
-                  Products
-                      │
-                      ▼
-                 Delivery
-
-The system keeps the different parts of the workflow organized inside a relational database.
-
----
-
 ⚙️ Installation
 
 1. Clone the repository
@@ -318,31 +320,29 @@ git clone https://github.com/MoamenRamy/mosa.git
 
 cd mosa
 
-2. Install dependencies
+2. Install PHP dependencies
 
 composer install
 
-3. Create ".env"
+3. Create the environment file
 
-Copy the example environment file:
+Copy ".env.example" to ".env".
+
+On Linux/macOS:
 
 cp .env.example .env
 
-On Windows, manually copy:
+On Windows:
 
-.env.example
+.env.example → .env
 
-to:
-
-.env
-
-4. Generate application key
+4. Generate the application key
 
 php artisan key:generate
 
-5. Configure MySQL
+5. Configure the database
 
-Update your ".env" file:
+Update the following values in ".env":
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -355,19 +355,19 @@ DB_PASSWORD=your_password
 
 php artisan migrate
 
-If the project contains seeders:
+If seeders are available:
 
 php artisan db:seed
 
-or:
+Or:
 
 php artisan migrate --seed
 
-7. Start Laravel
+7. Start the application
 
 php artisan serve
 
-Application:
+The application will be available at:
 
 http://127.0.0.1:8000
 
@@ -375,16 +375,16 @@ http://127.0.0.1:8000
 
 🔒 Security
 
-Sensitive configuration should never be committed to GitHub.
+Never commit sensitive credentials to GitHub.
 
-Keep credentials inside ".env":
+Keep sensitive configuration inside ".env":
 
 APP_KEY=
 DB_PASSWORD=
 MAIL_PASSWORD=
 API_KEY=
 
-Make sure ".env" remains inside ".gitignore".
+Make sure ".env" is included in ".gitignore".
 
 ---
 
@@ -398,12 +398,12 @@ This project demonstrates practical experience with:
 - CRUD operations
 - Middleware
 - Role-based authorization
-- Blade
+- Blade templates
 - Form handling
 - Validation
 - MySQL
 - Database migrations
-- Seeders
+- Database seeders
 - AJAX
 - DataTables
 - Administrative dashboards
@@ -413,40 +413,38 @@ This project demonstrates practical experience with:
 
 ---
 
-🎯 What This Project Demonstrates
+🎯 Project Goals
 
-MOSA demonstrates how Laravel can be used to build a real-world business application rather than a simple CRUD project.
+MOSA was developed to demonstrate how Laravel can be used to build a real-world business management system rather than a simple CRUD application.
 
 The project focuses on:
 
-- Translating business requirements into database entities
-- Designing relationships between business modules
+- Translating business requirements into software
+- Designing relational database structures
+- Connecting multiple business entities
+- Implementing role-based access control
 - Building administrative workflows
-- Implementing role-based access
-- Managing large amounts of structured business data
-- Building reusable CRUD interfaces
-- Improving user experience with AJAX
-- Connecting multiple business entities through Eloquent relationships
+- Managing structured business data
+- Creating reusable CRUD interfaces
+- Improving the admin experience with AJAX
 
 ---
 
-📈 Possible Future Improvements
+📈 Future Improvements
 
-Potential extensions for the system include:
+Possible future improvements include:
 
-- Advanced reporting
-- Sales and purchasing analytics
-- Inventory tracking
-- Low-stock notifications
-- Order status workflow
-- PDF invoice generation
-- Email notifications
-- Activity logs
-- Advanced permissions
-- REST API
-- Dashboard statistics
-- Export to Excel
-- Automated testing
+- 📊 Advanced business reports
+- 📦 Inventory tracking
+- ⚠️ Low-stock notifications
+- 📑 PDF invoice generation
+- 📧 Email notifications
+- 📋 Activity logs
+- 🔐 Advanced permissions
+- 🔌 REST API
+- 📈 Dashboard analytics
+- 📤 Excel export
+- 🧪 Automated feature testing
 
 ---
 
@@ -458,11 +456,13 @@ Backend Developer | PHP & Laravel
 
 Focused on building backend systems, REST APIs, database-driven applications, and business management platforms.
 
-Technologies
+Technical Skills
 
 PHP
 Laravel
 MySQL
+Python
+Django
 REST APIs
 Eloquent ORM
 Blade
@@ -470,10 +470,10 @@ JavaScript
 Git
 GitHub
 
-Links
+Connect With Me
 
-- GitHub: https://github.com/MoamenRamy
-- LinkedIn: https://www.linkedin.com/in/moamen-ramy-492a8b212/
+- GitHub: "MoamenRamy" (https://github.com/MoamenRamy)
+- LinkedIn: "Moamen Ramy" (https://www.linkedin.com/in/moamen-ramy-492a8b212/)
 
 ---
 
