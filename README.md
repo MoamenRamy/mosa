@@ -190,7 +190,7 @@ Examples include:
 🗄️ Database Structure
 
 The system is based on a relational database structure connecting the main business entities.
-
+```text
 Roles
   │
   └── Users
@@ -216,7 +216,7 @@ Orders
   ├── Hotels
   ├── Products
   └── Employees
-
+```
 Laravel Eloquent ORM is used to manage the relationships between these entities.
 
 ---
@@ -224,6 +224,7 @@ Laravel Eloquent ORM is used to manage the relationships between these entities.
 🔄 Business Workflow
 
 A typical hotel supply workflow:
+```text
 
         Hotel
           │
@@ -244,7 +245,7 @@ A typical hotel supply workflow:
           │
           ▼
       Delivery
-
+```
 ---
 
 🛠️ Tech Stack
@@ -279,7 +280,7 @@ Development Tools
 🏗️ Project Architecture
 
 The project follows the Laravel MVC architecture.
-
+```text
 mosa/
 │
 ├── app/
@@ -309,7 +310,7 @@ mosa/
 │
 ├── composer.json
 └── artisan
-
+```
 ---
 
 ⚙️ Installation
